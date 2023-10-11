@@ -15,7 +15,7 @@ with open(csv_file, mode='w', newline='') as file:
         first_name = fake.first_name()
         last_name = fake.last_name()
         email = fake.email()
-        password = 'password123'
+        password = fake.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)
 
         writer.writerow([first_name, last_name, email, password])
 
