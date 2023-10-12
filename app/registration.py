@@ -36,8 +36,10 @@ def register_students_from_csv(csv_file):
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     finally:
-        cursor.close()
-        connection.close()
+        if cursor and not cursor.closed:
+            cursor.close()
+        if connection and connection.is_connected():
+             connection.close()
 
 
 def main():
