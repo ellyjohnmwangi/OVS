@@ -19,13 +19,17 @@ def authenticate_student(email, password):
             hashed_password = result[0].encode('utf-8')
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
                 print("Authentication successful.")
+                return True
             else:
-                print("User not found!")
+                print("Incorrect password!")
+                return False
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     finally:
-        cursor.close()
-        connection.close()
+        if cursor and not cursor.closed:
+            cursor.close()
+        if connection and connection.is_connected():
+             connection.close()
 
 
 # Example usage:
