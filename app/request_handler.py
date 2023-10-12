@@ -3,7 +3,7 @@ import socketserver
 import os
 
 # Specify the directory where static files are located
-STATIC_DIR = "../static"
+STATIC_DIR = "/static"
 
 
 class StaticFileHandler(BaseHTTPRequestHandler):
@@ -14,11 +14,18 @@ class StaticFileHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == '/':
-            # Set the directory attribute to the directory containing "index.html"
-            self.directory = STATIC_DIR
-            self.path = '../static/index.html'
-
-        if self.path.startswith('/static/'):
+            # Serve "index.html" from the "templates" folder
+            try:
+                with open(os.path.join("templates", "index.html"), 'rb') as file:
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/html')
+                    self.end_headers()
+                    self.wfile.write(file.read())
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'File Not Found')
+        elif self.path.startswith('/static/'):
             # Serve static files
             self.serve_static_file()
         else:
@@ -26,7 +33,6 @@ class StaticFileHandler(BaseHTTPRequestHandler):
             self.send_response(404)
             self.end_headers()
             self.wfile.write(b'Not Found')
-
     def do_POST(self):
         if self.path.startswith('/static/'):
             # Create or update static files
