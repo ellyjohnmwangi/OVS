@@ -27,7 +27,7 @@ def register_students_from_csv(csv_file):
                 hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
 
                 # Insert student data into the database
-                sql = "INSERT INTO students (first_name, last_name, email, hashed_password) VALUES (%s, %s, %s, %s)"
+                sql = "INSERT INTO students (first_name, last_name, email, password) VALUES (%s, %s, %s, %s)"
                 values = (first_name, last_name, email, hashed_password.decode('utf-8'))
                 cursor.execute(sql, values)
                 connection.commit()
@@ -40,5 +40,9 @@ def register_students_from_csv(csv_file):
         connection.close()
 
 
-csv_file = 'student_records.csv'
-register_students_from_csv(csv_file)
+def main():
+    csv_file = '../config/student_records.csv'
+    register_students_from_csv(csv_file)
+
+
+main()
