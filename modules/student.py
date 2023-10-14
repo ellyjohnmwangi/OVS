@@ -12,7 +12,6 @@ import mysql.connector
 import bcrypt
 import logging
 import re
-from db_connector import get_db_connection
 
 class Student:
     def __init__(self, db_connection):

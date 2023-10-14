@@ -1,8 +1,16 @@
+#utils.py
+
+"""
+    This package explores utility functions to be used throught the project
+"""
+
 import re
 import bcrypt
 import html
 import jwt
 import datetime
+import secrets
+import string
 
 SECRET_KEY = 'your-secret-key'
 
@@ -41,3 +49,8 @@ def ValidateJWTToken(token):
         return None
     except jwt.DecodeError:
         return None
+
+def generate_random_string():
+    random_string_length = secrets.randbelow(6) + 10
+    characters = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(characters) for _ in range(random_string_length))

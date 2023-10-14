@@ -1,36 +1,80 @@
-import mysql.connector
-import bcrypt
+# login.py
+
+"""
+    This package contains all handlers for the login
+    It imports the db_connector and initiates it's own db connection does it's logic then closse it up
+"""
+
+import os
+import sys
+
+path = os.path.abspath("../")
+sys.path.append(path)
+import utils
+from modules.db_connector import DBConnector
+from modules.authenticator import Authenticator
 
 
-# Function to authenticate a student
-def authenticate_student(email, password):
-    try:
-        connection = mysql.connector.connect(
+class LoginHandler:
+    def __init__(self, request_handler):
+        self.request_handler = request_handler
+        self.db = DBConnector(
             host="localhost",
-            user="njoroge",
-            password="Student@db12",
-            database="student_db2"
+            user="root",
+            password="",
+            database="ovs_student"
         )
-        cursor = connection.cursor()
-        sql = "SELECT hashed_password FROM students WHERE email = %s"
-        cursor.execute(sql, (email,))
-        result = cursor.fetchone()
+        self.auth = Authenticator(self.db.get_connection())
+
+    def handle_get_student(self):
+        self.request_handler.send_response(200)
+        self.request_handler.send_header("Content-type", "text/html")
+        self.request_handler.end_headers()
+        with open("templates/login.html", "rb") as file:
+            self.request_handler.wfile.write(file.read())
+
+    def handle_get_user(self):
+        self.request_handler.send_response(200)
+        self.request_handler.send_header("Content-type", "text/html")
+        self.request_handler.end_headers()
+        with open("templates/admin_login.html", "rb") as file:
+            self.request_handler.wfile.write(file.read())
+
+    def handle_authenticate_student(self):
+        # Handle the authentication logic for student login
+        content_length = int(self.request_handler.headers["Content-Length"])
+        post_data = self.request_handler.rfile.read(content_length).decode("utf-8")
+        post_params = {param.split("=")[0]: param.split("=")[1] for param in post_data.split("&")}
+        email = post_params.get("email")
+        password = post_params.get("password")
+        result = self.auth.authenticate_student(email, password)
         if result:
-            hashed_password = result[0].encode('utf-8')
-            if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
-                print("Authentication successful.")
-                return True
-            else:
-                print("Incorrect password!")
-                return False
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
-    finally:
-        if cursor and not cursor.closed:
-            cursor.close()
-        if connection and connection.is_connected():
-             connection.close()
+            self.request_handler.send_response(200)
+            self.request_handler.send_header("Content-type", "text/html")
+            self.request_handler.end_headers()
+            with open("templates/index.html", "rb") as file:
+                self.request_handler.wfile.write(file.read())
+        else:
+            # Handle authentication failure (e.g., send an error message or redirect)
+            pass
 
-
-# Example usage:
-authenticate_student("johndoe@example.com", "password123")
+    def handle_authenticate_user(self):
+        # Handle the authentication logic for admin login
+        content_length = int(self.request_handler.headers["Content-Length"])
+        post_data = self.request_handler.rfile.read(content_length).decode("utf-8")
+        post_params = {param.split("=")[0]: param.split("=")[1] for param in post_data.split("&")}
+        email = post_params.get("email")
+        password = post_params.get("password")
+        success, user_type, admin_id = authenticator.authenticate_user(email, password)
+        if success:
+            print(f"User authenticated as {user_type} with admin ID {admin_id}")
+            # create a jwt token as and write it as a cookie value
+            token = utils.CreateJWTToken(user_type,admin_id)
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            with open("templates/admin.html", "rb") as file:
+                self.wfile.write(file.read())
+        else:
+            #write wrong credentials
+            pass

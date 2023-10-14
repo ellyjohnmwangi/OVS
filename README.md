@@ -12,7 +12,8 @@ OVS Is an online votting system crafted for campus students in Kenya.
 > cd OVS
 
 3. Install requirements
-*Might ad this later if necessary but for now we assume not*
+Install a required packages
+> pip install -r requirements.txt
 
 ### Install the DB
  cd into https://github.com/ellyjohnmwangi/OVS/database and import student_db2.sql into your mysql/mariadb server. If on testing environment use migrations.sql as it contains dummy data.
@@ -49,5 +50,9 @@ Run the main file
 3. Create your own branch and add a PR to it. *Please add your commit message as per the changes you have made ie "Added user methods.", "Added voter tallying"*
 4. Abstract your code away keeping CI in mind.
 5. Update the readme directory description for added files.
+
+*If you have added new pip packages, please initalize it for us with pip freeze*
+> pip freeze > requirements.txt
+
 
 ##### ADIOS

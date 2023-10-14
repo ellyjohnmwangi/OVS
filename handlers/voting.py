@@ -2,6 +2,11 @@
 import mysql.connector
 from mysql.connector import connect
 
+class VoteHandler:
+    def handle_get(self, request):
+        # Handle GET request for the vote page
+        # Return the appropriate response
+
 
 # Function to display the list of candidates
 def display_candidates():
