@@ -1,3 +1,13 @@
 2023-10-14 01:47:27,277 - ERROR - Error connecting to the database: 1044 (42000): Access denied for user ''@'localhost' to database 'ovs_student'
 2023-10-14 01:48:57,537 - ERROR - Error connecting to the database: 1044 (42000): Access denied for user ''@'localhost' to database 'ovs_student'
 2023-10-14 13:49:51,338 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,051 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,069 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,084 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,104 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,123 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,144 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,167 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,183 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,202 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-17 12:31:07,223 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)

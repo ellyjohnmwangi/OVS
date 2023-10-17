@@ -13,6 +13,7 @@ Import the required libraries:
 - Import the database connector from `db_connector.py`
 """
 
+# @@TODO: Add logging capabilities
 import os,sys
 import mysql.connector
 import bcrypt
@@ -43,17 +44,19 @@ class Authenticator:
         """
         try:
             # Check if the email exists in the students table
-            select_query = "SELECT email, password FROM students WHERE email = %s"
-            self.cursor.execute(select_query, (email,))
+            auth_query = "SELECT student_id,department,email, password FROM students WHERE email = %s"
+            self.cursor.execute(auth_query, (email,))
             row = self.cursor.fetchone()
             if row:
-                stored_password = row[1]
+                stored_password = row[3]
                 # Verify the password using bcrypt
-                if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
-                    return True
-            return False
+                if not bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
+                    return False,None,None
+                student_id,department = row[0],row[1]
+                return True,student_id,department
         except mysql.connector.Error as err:
             print(f"Error authenticating student: {err}")
+            return False, None, None  # Database error
         finally:
             self.cursor.close()
 
@@ -69,18 +72,18 @@ class Authenticator:
         """
         try:
             # Check if the email exists in the users table
-            select_query = "SELECT admin_id, user_type, password FROM users WHERE email = %s"
-            self.cursor.execute(select_query, (email,))
+            auth_query = "SELECT admin_id,email,user_type, password FROM users WHERE email = %s"
+            self.cursor.execute(auth_query, (email,))
             row = self.cursor.fetchone()
-
             if row:
-                admin_id, user_type, stored_password = row[0], row[1], row[2]
+                admin_id, email,user_type, stored_password = row[0], row[1], row[2],row[3]
                 # Verify the password using bcrypt
                 if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
-                    return True, user_type, admin_id
+                    return True,admin_id,email,user_type
 
-            return False, None, None
+            return False, None, None,None
         except mysql.connector.Error as err:
             print(f"Error authenticating user: {err}")
+            return False, None, None  # Database error
         finally:
             self.cursor.close()

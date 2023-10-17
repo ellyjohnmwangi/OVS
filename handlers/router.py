@@ -1,7 +1,6 @@
 # router.py
 import os,sys
 from http.server import SimpleHTTPRequestHandler
-from http.server import SimpleHTTPRequestHandler
 
 path = os.path.abspath("../")
 sys.path.append(path)
@@ -13,6 +12,11 @@ from handlers.login import LoginHandler
 """
 
 class Router(SimpleHTTPRequestHandler):
+    """
+    # setting new global variables
+    # check if voting is on:
+    """
+    isVotingOn = True
     def do_GET(self):
         if self.path == "/":
             self.home_route()

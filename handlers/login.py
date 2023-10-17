@@ -7,6 +7,7 @@
 
 import os
 import sys
+import http.cookies
 
 path = os.path.abspath("../")
 sys.path.append(path)
@@ -30,14 +31,14 @@ class LoginHandler:
         self.request_handler.send_response(200)
         self.request_handler.send_header("Content-type", "text/html")
         self.request_handler.end_headers()
-        with open("templates/login.html", "rb") as file:
+        with open("templates/student_login.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
 
     def handle_get_user(self):
         self.request_handler.send_response(200)
         self.request_handler.send_header("Content-type", "text/html")
         self.request_handler.end_headers()
-        with open("templates/admin_login.html", "rb") as file:
+        with open("templates/user_login.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
 
     def handle_authenticate_student(self):
@@ -47,16 +48,36 @@ class LoginHandler:
         post_params = {param.split("=")[0]: param.split("=")[1] for param in post_data.split("&")}
         email = post_params.get("email")
         password = post_params.get("password")
-        result = self.auth.authenticate_student(email, password)
-        if result:
-            self.request_handler.send_response(200)
+        auth_result = self.auth.authenticate_student(email, password)
+        if auth_result is not None and auth_result[0]:  # Check if authentication succeeded
+            _, student_id, department = auth_result
+            print(f"[+] Authenticated student with id {student_id} from department {department}")
+            # generate token and set as header
+            token = utils.CreateStudentJWTToken(student_id, department)
+            # Create a Cookie object and set the token as a cookie
+            cookies = http.cookies.SimpleCookie()
+            cookies["token"] = token
+            # Get the cookie header as a string
+            cookie_header = cookies.output(header="", sep="; ")
+            self.request_handler.send_response(302)  # Redirect response code
+            self.request_handler.send_header("Location", "/")  # Redirect URL
+            self.request_handler.send_header("Content-type", "text/html")
+            # Set the "Set-Cookie" header
+            self.request_handler.send_header("Set-Cookie", cookie_header)
+            self.request_handler.end_headers()
+        else:
+            self.request_handler.send_response(400)  # Bad request header
             self.request_handler.send_header("Content-type", "text/html")
             self.request_handler.end_headers()
-            with open("templates/index.html", "rb") as file:
-                self.request_handler.wfile.write(file.read())
-        else:
-            # Handle authentication failure (e.g., send an error message or redirect)
-            pass
+            error_message = "Wrong username or password provided."
+            # Load the HTML content from the file
+            with open("templates/student_login.html", "rb") as file:
+                html_content = file.read().decode("utf-8")
+                # Inject the error message into the HTML content
+                html_content = html_content.replace("{{wrong_password_provided}}", error_message)
+                # Send the modified HTML content as the response
+                self.request_handler.wfile.write(html_content.encode())
+
 
     def handle_authenticate_user(self):
         # Handle the authentication logic for admin login
@@ -65,16 +86,32 @@ class LoginHandler:
         post_params = {param.split("=")[0]: param.split("=")[1] for param in post_data.split("&")}
         email = post_params.get("email")
         password = post_params.get("password")
-        success, user_type, admin_id = authenticator.authenticate_user(email, password)
-        if success:
-            print(f"User authenticated as {user_type} with admin ID {admin_id}")
-            # create a jwt token as and write it as a cookie value
-            token = utils.CreateJWTToken(user_type,admin_id)
-            self.send_response(200)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-            with open("templates/admin.html", "rb") as file:
-                self.wfile.write(file.read())
+        auth_result = self.auth.authenticate_user(email, password)
+        if auth_result is not None and auth_result[0]:
+            _, user_id, email, user_type = auth_result
+            print(f"[+] User authenticated as {user_type} with admin ID {user_id}")
+            # create a JWT token and set it as a cookie value
+            token = utils.CreateUserJWTToken(user_id, user_type, email)
+            # Create a Cookie object and set the token as a cookie
+            cookies = http.cookies.SimpleCookie()
+            cookies["token"] = token
+            # Get the cookie header as a string
+            cookie_header = cookies.output(header="", sep="; ")
+            self.request_handler.send_response(302)  # Redirect response code
+            self.request_handler.send_header("Location", "/adminhome")  # Redirect URL
+            self.request_handler.send_header("Content-type", "text/html")
+            # Set the "Set-Cookie" header
+            self.request_handler.send_header("Set-Cookie", cookie_header)
+            self.request_handler.end_headers()
         else:
-            #write wrong credentials
-            pass
+            self.request_handler.send_response(400)  # Bad request header
+            self.request_handler.send_header("Content-type", "text/html")
+            self.request_handler.end_headers()
+            error_message = "Wrong username or password provided."
+            # Load the HTML content from the file
+            with open("templates/user_login.html", "rb") as file:
+                html_content = file.read().decode("utf-8")
+                # Inject the error message into the HTML content
+                html_content = html_content.replace("{{wrong_password_provided}}", error_message)
+                # Send the modified HTML content as the response
+                self.request_handler.wfile.write(html_content.encode())

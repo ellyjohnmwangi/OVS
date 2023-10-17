@@ -12,7 +12,7 @@ import datetime
 import secrets
 import string
 
-SECRET_KEY = 'your-secret-key'
+SECRET_KEY = 'OVS'
 
 # Email validation
 def IsValidEmail(email):
@@ -33,10 +33,19 @@ def SanitizeUserInput(user_input):
     return html.escape(user_input)
 
 # JWT token creation and validation
-def CreateJWTToken(user_id, user_type):
+def CreateUserJWTToken(user_id, user_type,email):
     payload = {
+        'email': email,
         'user_id': user_id,
         'user_type': user_type,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+def CreateStudentJWTToken(student_id, department):
+    payload = {
+        'student_id': student_id,
+        'department': department,
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
     }
     return jwt.encode(payload, SECRET_KEY, algorithm='HS256')

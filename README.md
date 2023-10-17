@@ -56,3 +56,21 @@ Run the main file
 
 
 ##### ADIOS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## WHY's
+*Add yours, potential exam questions*
+Why does each handler do it's own db connection and not at the top of class initialization?
+  in the case of two requests intiating the same db connection and one completing faster than the other then clossiing the connection hence the other probably won't get the results.
