@@ -48,6 +48,7 @@ class LoginHandler:
         post_params = {param.split("=")[0]: param.split("=")[1] for param in post_data.split("&")}
         email = post_params.get("email")
         password = post_params.get("password")
+        print(f"[-] Student email {email} password {password}")
         auth_result = self.auth.authenticate_student(email, password)
         if auth_result is not None and auth_result[0]:  # Check if authentication succeeded
             _, student_id, department = auth_result

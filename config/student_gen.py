@@ -38,7 +38,7 @@ def generate_and_insert_students(num_records, cursor):
         first_name = fake.first_name()
         last_name = fake.last_name()
         email = fake.user_name() + "@student.cuk.ac.ke"  # Append the desired suffix
-        password = fake.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)
+        password = fake.password(length=12, special_chars=False, digits=True, upper_case=True, lower_case=True)
 
         result = student.CreateStudent(department, first_name, last_name, email, password)
         student_data.append([department, first_name, last_name, email, password])
@@ -46,7 +46,7 @@ def generate_and_insert_students(num_records, cursor):
         print(result)
 
     # Save student data to a CSV file
-    with open('student_records.csv', mode='w', newline='') as file:
+    with open('student_records.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['department', 'first_name', 'last_name', 'email', 'password'])
         writer.writerows(student_data)
