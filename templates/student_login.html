@@ -7,21 +7,48 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
         }
+
         .container {
-            width: 300px;
-            margin: 0 auto;
+            background-color: #fff;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-        }
-        h1 {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 300px;
             text-align: center;
         }
-        input[type="text"], input[type="password"], input[type="submit"] {
-            width: 100%;
+
+        h1 {
+            margin: 0 0 20px;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="submit"] {
+            width: 90%;
             padding: 10px;
             margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -31,7 +58,7 @@
         <form id="login-form" method="post" action="/login">
             <input type="email" id="email" name="email" placeholder="student@cuk.ac.ke" required>
             <input type="password" id="password" name="password" placeholder="Password" required>
-            <button type="submit" value="Login">Login</button>
+            <input type="submit" value="Login">
         </form>
         <h2>{{wrong_password_provided}}</h2>
     </div>

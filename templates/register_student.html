@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Login Page</title>
+    <title>Student Registration</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,8 +29,10 @@
             margin: 0 0 20px;
         }
 
+        input[type="text"],
         input[type="email"],
         input[type="password"],
+        select,
         input[type="submit"] {
             width: 90%;
             padding: 10px;
@@ -54,13 +56,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>User Login</h1>
-        <form id="login-form" method="post" action="/admin">
-            <input type="email" id="email" name="email" placeholder="user@cuk.ac.ke" required>
+        <h1>Student Registration</h1>
+        <form id="registration-form" method="post" action="/register-student">
+            <input type="text" id="first-name" name="first-name" placeholder="First Name" required>
+            <input type="text" id="last-name" name="last-name" placeholder="Last Name" required>
+            <input type="email" id="email" name="email" placeholder="student@cuk.ac.ke" required>
             <input type="password" id="password" name="password" placeholder="Password" required>
-            <input type="submit" value="Login">
+            <select id="department" name="department" required>
+                <option value="" disabled selected>Select Department</option>
+                <option value="SCM">School of Computing and Mathematics (SCM)</option>
+                <option value="SBE">School of Business and Economics (SBE)</option>
+                <option value="SCCD">School of Computing and Communication Design (SCCD)</option>
+            </select>
+            <input type="submit" value="Register">
         </form>
-        <h2>{{wrong_password_provided}}</h2>
     </div>
 </body>
 </html>

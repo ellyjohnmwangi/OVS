@@ -14,6 +14,7 @@ sys.path.append(path)
 import utils
 from modules.db_connector import DBConnector
 from modules.authenticator import Authenticator
+from modules.student import Student
 
 
 class LoginHandler:
@@ -26,6 +27,37 @@ class LoginHandler:
             database="ovs_student"
         )
         self.auth = Authenticator(self.db.get_connection())
+
+        # added student code to debug registration, remove this later :)
+    def handle_register_student(self):
+        self.request_handler.send_response(200)
+        self.request_handler.send_header("Content-type", "text/html")
+        self.request_handler.end_headers()
+        with open("templates/register_student.html", "rb") as file:
+            self.request_handler.wfile.write(file.read())
+
+    def handle_student_registration(self):
+        #initiate a new DB connection and and call Student class
+        content_length = int(self.request_handler.headers["Content-Length"])
+        post_data = self.request_handler.rfile.read(content_length).decode("utf-8")
+        post_params = {param.split("=")[0]: param.split("=")[1] for param in post_data.split("&")}
+        department = post_params.get("department")
+        first_name = post_params.get("first-name")
+        last_name = post_params.get("last-name")
+        email = post_params.get("email")
+        password = post_params.get("password")
+        self.student = Student(self.db.get_connection())
+        result = self.student.CreateStudent(department, first_name, last_name, email, password)
+        if result !=  "Student created successfully":
+            print("Failed to register student")
+            print(f"[-] Error registering student {result}")
+        else:
+            print("Registertred student try logging in")
+            self.request_handler.send_response(302)  # Redirect response code
+            self.request_handler.send_header("Location", "/login")  # Redirect URL
+            self.request_handler.send_header("Content-type", "text/html")
+            self.request_handler.end_headers()
+        self.student.CloseConnection()
 
     def handle_get_student(self):
         self.request_handler.send_response(200)
@@ -78,6 +110,7 @@ class LoginHandler:
                 html_content = html_content.replace("{{wrong_password_provided}}", error_message)
                 # Send the modified HTML content as the response
                 self.request_handler.wfile.write(html_content.encode())
+        self.auth.CloseConnection()
 
 
     def handle_authenticate_user(self):
@@ -116,3 +149,4 @@ class LoginHandler:
                 html_content = html_content.replace("{{wrong_password_provided}}", error_message)
                 # Send the modified HTML content as the response
                 self.request_handler.wfile.write(html_content.encode())
+        self.auth.CloseConnection()

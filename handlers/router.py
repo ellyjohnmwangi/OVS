@@ -21,6 +21,10 @@ class Router(SimpleHTTPRequestHandler):
         if self.path == "/":
             self.home_route()
         #Login handles
+        ## Adding register for debugging purposes
+        elif self.path == "/register-student":
+            login_handler = LoginHandler(self)
+            login_handler.handle_register_student()
         elif self.path == "/login":
             login_handler = LoginHandler(self)
             login_handler.handle_get_student()
@@ -65,6 +69,9 @@ class Router(SimpleHTTPRequestHandler):
         elif self.path == "/admin":
             login_handler = LoginHandler(self)
             login_handler.handle_authenticate_user()
+        elif self.path == "/register-student":
+            login_handler = LoginHandler(self)
+            login_handler.handle_student_registration()
         else:
             self.send_response(404)
             self.end_headers()
