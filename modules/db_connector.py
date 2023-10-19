@@ -1,19 +1,24 @@
 # db_connector.py
 
-import mysql.connector
+
 import logging
+import mysql.connector
+import mysql
+
 
 class DBConnector:
     def __init__(self, host, user, password, database):
         self.db_config = {
-            'host': host,
-            'user': user,
-            'password': password,
-            'database': database
+            'host': 'localhost',
+            'user': 'njoroge',
+            'password': 'Student@db12',
+            'database': 'student_db2',
+            'auth_plugin': 'mysql_native_password'
         }
 
         # Configure logging to log errors to a file and print them to the console
-        logging.basicConfig(filename='.data/logs/sql_connection.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+        logging.basicConfig(filename='.data/logs/sql_connection.log', level=logging.ERROR,
+                            format='%(asctime)s - %(levelname)s - %(message)s')
         console_handler = logging.StreamHandler()
         console_handler.setLevel(logging.ERROR)
         logging.getLogger().addHandler(console_handler)
@@ -34,12 +39,14 @@ class DBConnector:
             self.db_connection.close()
             print("Closed db Connection")
 
+
 # Use your appropriate db credentials here
 """
 db = DBConnector(
     host="localhost",
     user="njoroge",
     password="Student@db12",
-    database="ovs_student"
+    database="ovs_student",
+    auth_plugin='mysql_native_password'
 )
 """

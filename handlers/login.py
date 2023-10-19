@@ -23,9 +23,9 @@ class LoginHandler:
         self.request_handler = request_handler
         self.db = DBConnector(
             host="localhost",
-            user="root",
-            password="",
-            database="ovs_student"
+            user="njoroge",
+            password="Student@db12",
+            database="student_db2",
         )
         self.auth = Authenticator(self.db.get_connection())
 

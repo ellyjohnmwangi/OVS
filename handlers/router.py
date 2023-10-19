@@ -1,5 +1,5 @@
 # router.py
-import os,sys
+import os, sys
 from http.server import SimpleHTTPRequestHandler
 
 path = os.path.abspath("../")
@@ -11,17 +11,19 @@ from handlers.login import LoginHandler
     Our good route only accepts two methods, a GET and and POST request
 """
 
+
 class Router(SimpleHTTPRequestHandler):
     """
     # setting new global variables
     # check if voting is on:
     """
     isVotingOn = True
+
     def do_GET(self):
         if self.path == "/":
             self.home_route()
-        #Login handles
-        ## Adding register for debugging purposes
+        # Login handles
+        # Adding register for debugging purposes
         elif self.path == "/register-student":
             login_handler = LoginHandler(self)
             login_handler.handle_register_student()
@@ -47,7 +49,7 @@ class Router(SimpleHTTPRequestHandler):
                 content_type = "image/jpeg"
             else:
                 self.send_response(404)
-                self.send_headers()
+                self.send_header("Content-type", "text/plain")
                 self.wfile.write(b"404 Page Not Found")
                 return
 
@@ -83,4 +85,4 @@ class Router(SimpleHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
         with open("templates/index.html", "rb") as file:
-         self.wfile.write(file.read())
+            self.wfile.write(file.read())

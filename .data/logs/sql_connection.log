@@ -22,3 +22,44 @@
 2023-10-19 12:08:29,512 - ERROR - Failed to authenticate student with email ruthmoreno%40student.cuk.ac.ke
 2023-10-19 12:10:42,524 - ERROR - Failed to authenticate student with email ruthmoreno%40student.cuk.ac.ke
 2023-10-19 13:10:23,626 - ERROR - Failed to authenticate student with email jermaineromero%40student.cuk.ac.ke
+2023-10-19 20:30:15,347 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:16,429 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:16,432 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:16,435 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:21,469 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:21,471 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:21,474 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:33,056 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:33,059 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:33,062 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:34,117 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:34,120 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:34,126 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:39,318 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:39,320 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:30:39,323 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:31:09,357 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:31:09,360 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:31:09,365 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:32:09,401 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:32:09,403 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:32:09,407 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 20:34:32,799 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 20:34:32,805 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 20:34:32,808 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 22:42:49,622 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 22:42:49,991 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 22:42:49,994 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 22:42:51,075 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 22:42:51,077 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 22:42:51,080 - ERROR - Error connecting to the database: 2003: Can't connect to MySQL server on 'localhost:3306' (111 Connection refused)
+2023-10-19 23:12:19,070 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:12:19,074 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:12:19,078 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:12:20,157 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:12:20,167 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:12:20,171 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:12:25,208 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:12:25,212 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:12:25,215 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported
+2023-10-19 23:56:57,280 - ERROR - Error connecting to the database: Authentication plugin 'caching_sha2_password' is not supported

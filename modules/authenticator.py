@@ -1,4 +1,4 @@
-#authenticator.py
+# authenticator.py
 """
 This module handles all forms of authentication.
 Defines a class Authenticator exposing authenticate_student and authenticate_user methods:
@@ -14,7 +14,7 @@ Import the required libraries:
 """
 
 # @@TODO: Add logging capabilities
-import os,sys
+import os, sys
 import mysql.connector
 import bcrypt
 
@@ -23,6 +23,7 @@ sys.path.append(path)
 
 from modules.db_connector import DBConnector
 from utils.logger import setup_logging, log_error
+
 
 class Authenticator:
     def __init__(self, db_connection):
@@ -53,11 +54,11 @@ class Authenticator:
                 stored_password = row[3]
                 # Verify the password using bcrypt
                 if not bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
-                    return False,None,None
-                student_id,department = row[0],row[1]
-                return True,student_id,department
+                    return False, None, None
+                student_id, department = row[0], row[1]
+                return True, student_id, department
         except mysql.connector.Error as err:
-            error_message = "Error authenticating student: "+ str(err)
+            error_message = "Error authenticating student: " + str(err)
             log_error(error_message)
             return False, None, None  # Database error
         finally:
@@ -79,14 +80,14 @@ class Authenticator:
             self.cursor.execute(auth_query, (email,))
             row = self.cursor.fetchone()
             if row:
-                admin_id, email,user_type, stored_password = row[0], row[1], row[2],row[3]
+                admin_id, email, user_type, stored_password = row[0], row[1], row[2], row[3]
                 # Verify the password using bcrypt
                 if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
-                    return True,admin_id,email,user_type
+                    return True, admin_id, email, user_type
 
-            return False, None, None,None
+            return False, None, None, None
         except mysql.connector.Error as err:
-            error_message = "Error authenticating student: "+ str(err)
+            error_message = "Error authenticating student: " + str(err)
             logging.error(error_message)
             return False, None, None  # Database error
         finally:
