@@ -11,3 +11,13 @@
 2023-10-17 12:31:07,183 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
 2023-10-17 12:31:07,202 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
 2023-10-17 12:31:07,223 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-18 05:46:05,550 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-18 05:55:38,221 - ERROR - Error connecting to the database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+2023-10-18 07:43:28,964 - ERROR - Failed to authenticate student with email sam%40student.cuk.ac.ke
+2023-10-18 11:10:19,551 - ERROR - Failed to authenticate student with email hgeorge%40student.cuk.ac.ke
+2023-10-18 11:32:52,597 - ERROR - Failed to authenticate student with email wheagle%40eloracle.africa
+2023-10-18 11:44:42,285 - ERROR - Failed to authenticate student with email rdfgxtr%40hjvghf.loj.kj
+2023-10-18 11:49:35,909 - ERROR - Failed to authenticate student with email ashleyharvey%40student.cuk.ac.ke
+2023-10-19 11:59:21,913 - ERROR - Failed to authenticate student with email glen38%40student.cuk.ac.ke
+2023-10-19 12:08:29,512 - ERROR - Failed to authenticate student with email ruthmoreno%40student.cuk.ac.ke
+2023-10-19 12:10:42,524 - ERROR - Failed to authenticate student with email ruthmoreno%40student.cuk.ac.ke

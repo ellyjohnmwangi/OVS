@@ -22,6 +22,7 @@ path = os.path.abspath("../")
 sys.path.append(path)
 
 from modules.db_connector import DBConnector
+from utils.logger import setup_logging, log_error
 
 class Authenticator:
     def __init__(self, db_connection):
@@ -32,6 +33,7 @@ class Authenticator:
         """
         self.db_connection = db_connection
         self.cursor = self.db_connection.cursor()
+        setup_logging("../.data/logs/auth_sql.log")
 
     def authenticate_student(self, email, password):
         """
@@ -55,7 +57,8 @@ class Authenticator:
                 student_id,department = row[0],row[1]
                 return True,student_id,department
         except mysql.connector.Error as err:
-            print(f"Error authenticating student: {err}")
+            error_message = "Error authenticating student: "+ str(err)
+            log_error(error_message)
             return False, None, None  # Database error
         finally:
             self.cursor.close()
@@ -83,7 +86,8 @@ class Authenticator:
 
             return False, None, None,None
         except mysql.connector.Error as err:
-            print(f"Error authenticating user: {err}")
+            error_message = "Error authenticating student: "+ str(err)
+            logging.error(error_message)
             return False, None, None  # Database error
         finally:
             self.cursor.close()

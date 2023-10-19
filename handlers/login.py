@@ -8,6 +8,7 @@
 import os
 import sys
 import http.cookies
+from urllib.parse import unquote
 
 path = os.path.abspath("../")
 sys.path.append(path)
@@ -28,6 +29,8 @@ class LoginHandler:
         )
         self.auth = Authenticator(self.db.get_connection())
 
+        utils.logger.setup_logging("../.data/logs/auth_handler.log")
+
         # added student code to debug registration, remove this later :)
     def handle_register_student(self):
         self.request_handler.send_response(200)
@@ -40,6 +43,8 @@ class LoginHandler:
         #initiate a new DB connection and and call Student class
         content_length = int(self.request_handler.headers["Content-Length"])
         post_data = self.request_handler.rfile.read(content_length).decode("utf-8")
+        # Decode the URL-encoded POST data
+        post_data = unquote(post_data)
         post_params = {param.split("=")[0]: param.split("=")[1] for param in post_data.split("&")}
         department = post_params.get("department")
         first_name = post_params.get("first-name")
@@ -49,7 +54,7 @@ class LoginHandler:
         self.student = Student(self.db.get_connection())
         result = self.student.CreateStudent(department, first_name, last_name, email, password)
         if result !=  "Student created successfully":
-            print("Failed to register student")
+            utils.logger.log_error("Failed to register student with email "+ email)
             print(f"[-] Error registering student {result}")
         else:
             print("Registertred student try logging in")
@@ -86,7 +91,7 @@ class LoginHandler:
             _, student_id, department = auth_result
             print(f"[+] Authenticated student with id {student_id} from department {department}")
             # generate token and set as header
-            token = utils.CreateStudentJWTToken(student_id, department)
+            token = utils.utils.CreateStudentJWTToken(student_id, department)
             # Create a Cookie object and set the token as a cookie
             cookies = http.cookies.SimpleCookie()
             cookies["token"] = token
@@ -99,18 +104,18 @@ class LoginHandler:
             self.request_handler.send_header("Set-Cookie", cookie_header)
             self.request_handler.end_headers()
         else:
+            utils.logger.log_error("Failed to authenticate student with email "+ email)
             self.request_handler.send_response(400)  # Bad request header
             self.request_handler.send_header("Content-type", "text/html")
             self.request_handler.end_headers()
             error_message = "Wrong username or password provided."
             # Load the HTML content from the file
-            with open("templates/student_login.html", "rb") as file:
+            with open("templates/student_response.html", "rb") as file:
                 html_content = file.read().decode("utf-8")
                 # Inject the error message into the HTML content
                 html_content = html_content.replace("{{wrong_password_provided}}", error_message)
                 # Send the modified HTML content as the response
                 self.request_handler.wfile.write(html_content.encode())
-        self.auth.CloseConnection()
 
 
     def handle_authenticate_user(self):
@@ -125,7 +130,7 @@ class LoginHandler:
             _, user_id, email, user_type = auth_result
             print(f"[+] User authenticated as {user_type} with admin ID {user_id}")
             # create a JWT token and set it as a cookie value
-            token = utils.CreateUserJWTToken(user_id, user_type, email)
+            token = utils.utils.CreateUserJWTToken(user_id, user_type, email)
             # Create a Cookie object and set the token as a cookie
             cookies = http.cookies.SimpleCookie()
             cookies["token"] = token
@@ -143,10 +148,9 @@ class LoginHandler:
             self.request_handler.end_headers()
             error_message = "Wrong username or password provided."
             # Load the HTML content from the file
-            with open("templates/user_login.html", "rb") as file:
+            with open("templates/user_response.html", "rb") as file:
                 html_content = file.read().decode("utf-8")
                 # Inject the error message into the HTML content
                 html_content = html_content.replace("{{wrong_password_provided}}", error_message)
                 # Send the modified HTML content as the response
                 self.request_handler.wfile.write(html_content.encode())
-        self.auth.CloseConnection()

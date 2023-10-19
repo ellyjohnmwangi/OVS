@@ -30,21 +30,17 @@ cnct = db.get_connection()
 
 def generate_and_insert_students(num_records, cursor):
     student = Student(cursor)
-
-    student_data = []  # To store student data
-
+    student_data = []  # List To store student data
     for _ in range(num_records):
         department = fake.random_element(elements=('SCM', 'SBE', 'SCCD'))
         first_name = fake.first_name()
         last_name = fake.last_name()
         email = fake.user_name() + "@student.cuk.ac.ke"  # Append the desired suffix
-        password = fake.password(length=12, special_chars=False, digits=True, upper_case=True, lower_case=True)
-
+        # password = fake.password(length=12, special_chars=False, digits=True, upper_case=True, lower_case=True)
+        password ="1234"
         result = student.CreateStudent(department, first_name, last_name, email, password)
         student_data.append([department, first_name, last_name, email, password])
-
         print(result)
-
     # Save student data to a CSV file
     with open('student_records.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
@@ -56,19 +52,15 @@ generate_and_insert_students(num_records, cnct)
 
 def generate_and_insert_users(num_records, cursor):
     users = Users(cursor)
-
-    users_data = []  # To store user data
-
+    users_data = []  # List To store user data
     for _ in range(num_records):
         email = fake.user_name() + "@student.cuk.ac.ke"  # Append the desired suffix
         user_type = fake.random_element(elements=('delegate', 'admin', 'polling_officer'))
-        password = fake.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)
-
+        # password = fake.password(length=12, special_chars=True, digits=True, upper_case=True, lower_case=True)
+        password ="1234"
         result = users.CreateUser(email, user_type, password)
         users_data.append([email, user_type, password])
-
         print(result)
-
     # Save user data to a CSV file
     with open('user_records.csv', mode='w', newline='') as file:
         writer = csv.writer(file)

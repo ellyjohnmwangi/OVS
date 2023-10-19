@@ -20,8 +20,8 @@ class Student:
 
     def CreateStudent(self, department, first_name, last_name, email, password):
         # Check if the email has the correct format
-        if not self.is_student_email(email):
-            return "Invalid student email format"
+        #if not self.is_student_email(email):
+        #    return "Invalid student email format"
 
         # Hash the password using bcrypt
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
