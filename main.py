@@ -5,32 +5,35 @@
 
 # import required files
 import http.server
-import socketserver
+import http.server
 import os
+import socketserver
 import sys
 
+from handlers import router
+
 # Initiate internal libraries for importing get_db_connection
-#path = os.path.abspath("./modules")
-#sys.path.append(path)
+# path = os.path.abspath("./modules")
+# sys.path.append(path)
 
 path = os.path.abspath("./handlers")
 sys.path.append(path)
-
-## initiate a DB Connection
-# from db_connector import DBConnector
-from router import Router
-
 PORT = 8000
 
+
+class MyTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
+
 def run_server():
-    Handler = http.server.SimpleHTTPRequestHandler
-    with socketserver.TCPServer(("", PORT), Router) as httpd:
+    handler = http.server.SimpleHTTPRequestHandler
+    with MyTCPServer(("", PORT), router.Router) as httpd:
         print(f"Serving at port {PORT}")
         httpd.serve_forever()
 
+
 if __name__ == "__main__":
     run_server()
-
 
 """
 def main():
