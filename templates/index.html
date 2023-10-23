@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Voting System</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
     <div class="container">
-        <h1>Vote for Your Preferred Candidate</h1>
-        <div class="candidates">
-            <!-- Candidate list will be generated dynamically -->
+        <div class="option">
+            <h2>View Candidates</h2>
+            <!-- Add content or functionality related to viewing candidates here -->
         </div>
-        <div class="vote-button">
-            <button id="castVote">Cast Your Vote</button>
+
+        <div class="option">
+            <h2>Vote</h2>
+            <button onclick="redirectToVotingPage()">Go to Voting</button>
         </div>
-        <div class="message" id="message">
-            <!-- Message for the user will be displayed here -->
+
+        <div class="option">
+            <h2>See Election Results</h2>
+            <button onclick="redirectToResultsPage()">View Results</button>
         </div>
     </div>
-    <script src="static/js/script.js"></script>
+
+    <script src="/static/js/script.js"></script>
 </body>
 </html>
