@@ -23,12 +23,7 @@ sys.path.append(path)
 class LoginHandler:
     def __init__(self, request_handler):
         self.request_handler = request_handler
-        self.db = DBConnector(
-            host="localhost",
-            user="njoroge",
-            password="Student@db12",
-            database="student_db2",
-        )
+        self.db = DBConnector()
         self.auth = Authenticator(self.db.get_connection())
 
         utils.logger.setup_logging("../.data/logs/auth_handler.log")

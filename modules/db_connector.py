@@ -7,12 +7,12 @@ import mysql
 
 
 class DBConnector:
-    def __init__(self, host, user, password, database):
+    def __init__(self):
         self.db_config = {
             'host': 'localhost',
-            'user': 'njoroge',
-            'password': 'Student@db12',
-            'database': 'student_db2',
+            'user': 'root',
+            'password': '',
+            'database': 'ovs_student',
             'auth_plugin': 'mysql_native_password'
         }
 

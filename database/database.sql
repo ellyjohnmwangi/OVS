@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS students (
 CREATE TABLE IF NOT EXISTS users (
   `admin_id` INT AUTO_INCREMENT PRIMARY KEY,
   `email` VARCHAR(255) UNIQUE NOT NULL,
-  `user_type` ENUM('delegate', 'admin', 'polling_officer'),
+  `user_type` ENUM('delegate', 'admin', 'polling_officer','student'),
   `password` CHAR(60) NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
