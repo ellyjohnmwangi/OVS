@@ -80,9 +80,34 @@ class Router(SimpleHTTPRequestHandler):
             self.wfile.write(b"404 Page Not Found")
 
     def home_route(self):
-        #  @TODO IMPLEMENT LOGIC FOR CHEKING IF VOTTED IR IF TIME TO VOTE BLAH BLAH
+        #  @TODO IMPLEMENT LOGIC FOR CHEcKING IF VOTTED IR IF TIME TO VOTE BLAH BLAH
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
         with open("templates/index.html", "rb") as file:
             self.wfile.write(file.read())
+
+
+"""
+    tokenUserTypes = 'student,admin,delegate,polling_officer
+    class HomePage:
+        # check if user has logged in
+            if not Lg In
+        # if user has logged in, get token and unmarshal the payload
+            # if student
+                check if voted 
+                    if voted, redirect to results page
+                if not voted
+                    check if voting is on:
+                        if on: redirect to voting
+                        if not: redirect to results
+            # if user:
+                if delegate: check if delegate voting is on
+                    if on: let them vote
+                    if not: redirect to results page
+                if admin:
+                    redirect to admin page
+                if polling officer:
+                    # they should have a polling officer admin page or something
+                    
+"""
