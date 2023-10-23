@@ -9,13 +9,15 @@ import os
 import sys
 import http.cookies
 from urllib.parse import unquote
-
-path = os.path.abspath("../")
-sys.path.append(path)
-import utils
+# Import the specific functions or classes you need
+from utils.jwt_token import CreateStudentJWTToken, CreateUserJWTToken
 from modules.db_connector import DBConnector
 from modules.authenticator import Authenticator
 from modules.student import Student
+import utils.logger
+import utils.jwt_token
+path = os.path.abspath("../")
+sys.path.append(path)
 
 
 class LoginHandler:
@@ -32,6 +34,7 @@ class LoginHandler:
         utils.logger.setup_logging("../.data/logs/auth_handler.log")
 
         # added student code to debug registration, remove this later :)
+
     def handle_register_student(self):
         self.request_handler.send_response(200)
         self.request_handler.send_header("Content-type", "text/html")
@@ -40,7 +43,7 @@ class LoginHandler:
             self.request_handler.wfile.write(file.read())
 
     def handle_student_registration(self):
-        #initiate a new DB connection and and call Student class
+        # initiate a new DB connection and and call Student class
         content_length = int(self.request_handler.headers["Content-Length"])
         post_data = self.request_handler.rfile.read(content_length).decode("utf-8")
         # Decode the URL-encoded POST data
@@ -53,11 +56,11 @@ class LoginHandler:
         password = post_params.get("password")
         self.student = Student(self.db.get_connection())
         result = self.student.CreateStudent(department, first_name, last_name, email, password)
-        if result !=  "Student created successfully":
-            utils.logger.log_error("Failed to register student with email "+ email)
+        if result != "Student created successfully":
+            utils.logger.log_error("Failed to register student with email " + email)
             print(f"[-] Error registering student {result}")
         else:
-            print("Registertred student try logging in")
+            print("Registered student try logging in")
             self.request_handler.send_response(302)  # Redirect response code
             self.request_handler.send_header("Location", "/login")  # Redirect URL
             self.request_handler.send_header("Content-type", "text/html")
@@ -82,21 +85,21 @@ class LoginHandler:
         # Handle the authentication logic for student login
         content_length = int(self.request_handler.headers["Content-Length"])
         post_data = self.request_handler.rfile.read(content_length).decode("utf-8")
-        post_params = {param.split("=")[0]: param.split("=")[1] for param in post_data.split("&")}
+        post_params = {param.split("=")[0]: unquote(param.split("=")[1]) for param in post_data.split("&")}
         email = post_params.get("email")
         password = post_params.get("password")
-        print(f"[-] Student email {email} password {password}")
+
         auth_result = self.auth.authenticate_student(email, password)
         if auth_result is not None and auth_result[0]:  # Check if authentication succeeded
             _, student_id, department = auth_result
-            print(f"[+] Authenticated student with id {student_id} from department {department}")
             # generate token and set as header
-            token = utils.utils.CreateStudentJWTToken(student_id, department)
+            token = utils.jwt_token.CreateStudentJWTToken()
             # Create a Cookie object and set the token as a cookie
             cookies = http.cookies.SimpleCookie()
-            cookies["token"] = token
+            cookies["token"] = str(token)
             # Get the cookie header as a string
             cookie_header = cookies.output(header="", sep="; ")
+
             self.request_handler.send_response(302)  # Redirect response code
             self.request_handler.send_header("Location", "/")  # Redirect URL
             self.request_handler.send_header("Content-type", "text/html")
@@ -104,7 +107,7 @@ class LoginHandler:
             self.request_handler.send_header("Set-Cookie", cookie_header)
             self.request_handler.end_headers()
         else:
-            utils.logger.log_error("Failed to authenticate student with email "+ email)
+            utils.logger.log_error("Failed to authenticate student with email " + email)
             self.request_handler.send_response(400)  # Bad request header
             self.request_handler.send_header("Content-type", "text/html")
             self.request_handler.end_headers()
@@ -116,8 +119,6 @@ class LoginHandler:
                 html_content = html_content.replace("{{wrong_password_provided}}", error_message)
                 # Send the modified HTML content as the response
                 self.request_handler.wfile.write(html_content.encode())
-
-
     def handle_authenticate_user(self):
         # Handle the authentication logic for admin login
         content_length = int(self.request_handler.headers["Content-Length"])

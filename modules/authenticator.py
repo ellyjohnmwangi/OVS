@@ -14,15 +14,16 @@ Import the required libraries:
 """
 
 # @@TODO: Add logging capabilities
-import os, sys
-import mysql.connector
+import os
+import sys
+
 import bcrypt
+import mysql.connector
+from utils.logger import setup_logging, log_error
+
 
 path = os.path.abspath("../")
 sys.path.append(path)
-
-from modules.db_connector import DBConnector
-from utils.logger import setup_logging, log_error
 
 
 class Authenticator:
