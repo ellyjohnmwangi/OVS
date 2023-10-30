@@ -89,25 +89,34 @@ class Router(SimpleHTTPRequestHandler):
         return token
 
     def home_route(self):
-        #  @TODO IMPLEMENT LOGIC FOR CHEcKING IF VOTTED IR IF TIME TO VOTE BLAH BLAH
+        # @TODO IMPLEMENT LOGIC FOR CHECKING IF VOTED OR IF TIME TO VOTE BLAH BLAH
         # get token from request and print it out.
         token = self.get_token_from_request()
-        if token:
+        if type(token) is str:
             print(f"[+] Token is {token}")
             # call home
-            home = Home(self,token)
+            home = Home(self, token)
             payload = hps.ValidateJWTToken(token)
-            match payload.user_type:
-                case "student_id":
-                    home.HandleStudentHome()
-                case "delegate":
-                    home.HandleDelegate()
-                case "polling_officer":
-                    home.HandlePollingOfficer()
-                case "admin":
-                    home.HandleAdmin()
+            if payload is not None:
+                # Check if payload is not None before accessing user_type
+                match payload.user_type:
+                    case "student_id":
+                        home.HandleStudentHome()
+                    case "delegate":
+                        home.HandleDelegate()
+                    case "polling_officer":
+                        home.HandlePollingOfficer()
+                    case "admin":
+                        home.HandleAdmin()
+            else:
+                # Handle the case where payload is None (invalid token)
+                self.send_response(400)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+                with open("templates/student_login.html", "rb") as file:
+                    self.wfile.write(file.read())
         else:
-            #redirect to login
+            # Redirect to login
             self.send_response(400)
             self.send_header("Content-type", "text/html")
             self.end_headers()

@@ -15,7 +15,9 @@ from modules.db_connector import DBConnector
 from modules.authenticator import Authenticator
 from modules.student import Student
 import utils.logger
-import utils.jwt_token
+from utils.utils import Helpers as hps
+
+
 path = os.path.abspath("../")
 sys.path.append(path)
 
@@ -88,10 +90,11 @@ class LoginHandler:
         if auth_result is not None and auth_result[0]:  # Check if authentication succeeded
             _, student_id, department = auth_result
             # generate token and set as header
-            token = utils.jwt_token.CreateStudentJWTToken()
+            token = hps.CreateStudentJWTToken(student_id, department)
             # Create a Cookie object and set the token as a cookie
             cookies = http.cookies.SimpleCookie()
             cookies["token"] = str(token)
+            print(f"[+] Validated student with id {student_id} and token genereated {str(token)}")
             # Get the cookie header as a string
             cookie_header = cookies.output(header="", sep="; ")
 
