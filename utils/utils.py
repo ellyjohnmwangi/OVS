@@ -48,6 +48,7 @@ class Helpers:
         payload = {
             'student_id': student_id,
             'department': department,
+            'user_type': 'student',
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
         }
         return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -63,7 +64,7 @@ class Helpers:
         except jwt.DecodeError:
             return None
 
-    def generate_random_string():
+    def generate_random_string(self):
         random_string_length = secrets.randbelow(6) + 10
         characters = string.ascii_letters + string.digits
         return ''.join(secrets.choice(characters) for _ in range(random_string_length))

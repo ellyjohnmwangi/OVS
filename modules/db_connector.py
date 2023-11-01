@@ -13,7 +13,7 @@ class DBConnector:
             'user': 'root',
             'password': '',
             'database': 'ovs_student',
-            'auth_plugin': 'mysql_native_password'
+            # 'auth_plugin': 'mysql_native_password'
         }
 
         # Configure logging to log errors to a file and print them to the console
@@ -39,6 +39,8 @@ class DBConnector:
             self.db_connection.close()
             print("Closed db Connection")
 
+
+# connector = DBConnector()
 
 # Use your appropriate db credentials here
 """

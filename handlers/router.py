@@ -24,6 +24,7 @@ class Router(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/":
+            print("Home path requested...")
             self.home_route()
         # Login handles
         # Adding register for debugging purposes
@@ -89,25 +90,36 @@ class Router(SimpleHTTPRequestHandler):
         return token
 
     def home_route(self):
+        print("I am at home")
         # @TODO IMPLEMENT LOGIC FOR CHECKING IF VOTED OR IF TIME TO VOTE BLAH BLAH
         # get token from request and print it out.
         token = self.get_token_from_request()
+        print("I have token.")
         if type(token) is str:
             print(f"[+] Token is {token}")
             # call home
-            home = Home(self, token)
+            home = Home(self)
             payload = hps.ValidateJWTToken(token)
             if payload is not None:
-                # Check if payload is not None before accessing user_type
-                match payload.user_type:
-                    case "student_id":
-                        home.HandleStudentHome()
-                    case "delegate":
-                        home.HandleDelegate()
-                    case "polling_officer":
-                        home.HandlePollingOfficer()
-                    case "admin":
-                        home.HandleAdmin()
+                if 'user_type' in payload:  # Check if 'user_type' exists in the payload dictionary
+                    user_type = payload['user_type']
+                    print(f"Usertype is: {user_type}")
+                    match user_type:
+                        case "student":
+                            home.HandleStudentHome()
+                        case "delegate":
+                            home.HandleDelegate()
+                        case "polling_officer":
+                            home.HandlePollingOfficer()
+                        case "admin":
+                            home.HandleAdmin()
+                else:
+                    # Handle the case where 'user_type' is not present in the payload
+                    self.send_response(400)
+                    self.send_header("Content-type", "text/html")
+                    self.end_headers()
+                    with open("templates/student_login.html", "rb") as file:
+                        self.wfile.write(file.read())
             else:
                 # Handle the case where payload is None (invalid token)
                 self.send_response(400)
