@@ -24,7 +24,7 @@ class Home:
         self.request_handler.send_response(200)
         self.request_handler.send_header("Content-type", "text/html")
         self.request_handler.end_headers()
-        with open("templates/delegate_home.html", "rb") as file:
+        with open("templates/student_home.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
 
     def HandleAdmin(self):
