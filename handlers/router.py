@@ -144,7 +144,7 @@ class Router(SimpleHTTPRequestHandler):
         # if user has logged in, get token and unmarshal the payload
             # if student
                 check if voted
-                    if voted, redirect to results page
+                  gmgbkgkthoemojhtojjtjoihrjth  if voted, redirect to results page
                 if not voted
                     check if voting is on:
                         if on: redirect to voting
