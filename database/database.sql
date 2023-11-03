@@ -42,6 +42,8 @@ CREATE TABLE IF NOT EXISTS candidates (
   `student_id` INT,
   `position_id` INT,
   `no_of_votes` INT,
+  `department` ENUM('SCM', 'SBE', 'SCCD'),
+  `candidate_type` ENUM('delegate','finance','president','secretary general','social welfare','gender')
   `deleted_at` TIMESTAMP,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
