@@ -19,7 +19,7 @@ from handlers import router
 path = os.path.abspath("./handlers")
 sys.path.append(path)
 PORT = 8000
-
+IsVottingOn  = False
 
 class MyTCPServer(socketserver.TCPServer):
     allow_reuse_address = True
@@ -55,5 +55,3 @@ if __name__ == "__main__":
 """
 import logging
 import mysql.connector
-
-

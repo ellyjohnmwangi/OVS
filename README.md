@@ -74,3 +74,11 @@ Run the main file
 *Add yours, potential exam questions*
 Why does each handler do it's own db connection and not at the top of class initialization?
   in the case of two requests intiating the same db connection and one completing faster than the other then clossiing the connection hence the other probably won't get the results.
+
+What happens when creating an Election:
+  1. A term is created.
+  2. Students get a chance to apply for various positions and the PO will select those who do qualify.
+
+How does voting occur
+  1. On server start up, it is checked to ensure if votting is on and initialised for the router
+*Positions are created once during server initialization, this has a disadvantage of flexibility hence future implementations canm have admin functionality to create or delete various positions*
