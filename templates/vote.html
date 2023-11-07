@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Voting System</title>
+    <style>
+        /* Add your CSS styles here */
+        .candidate-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .confirm-popup {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vote for Candidates</h1>
+
+    <!-- Candidate 1 -->
+    <div class="candidate-container">
+        <h2>Candidate 1</h2>
+        <p>Position: Position A</p>
+        <button onclick="confirmVote(1)">Vote</button>
+    </div>
+
+    <!-- Candidate 2 -->
+    <div class="candidate-container">
+        <h2>Candidate 2</h2>
+        <p>Position: Position B</p>
+        <button onclick="confirmVote(2)">Vote</button>
+    </div>
+
+    <!-- Add more candidate containers as needed -->
+
+    <!-- Confirm Popup -->
+    <div class="confirm-popup" id="confirmPopup">
+        <div class="popup-content">
+            <p>Confirm your vote?</p>
+            <button onclick="confirmAndRedirect()">Yes</button>
+            <button onclick="cancelVote()">No</button>
+        </div>
+    </div>
+
+    <script>
+        function confirmVote(candidateId) {
+            // Show the confirm popup
+            const confirmPopup = document.getElementById("confirmPopup");
+            confirmPopup.style.display = "flex";
+
+            // Store the selected candidate ID for later use
+            sessionStorage.setItem("selectedCandidate", candidateId);
+        }
+
+        function confirmAndRedirect() {
+            // Get the selected candidate ID from storage
+            const candidateId = sessionStorage.getItem("selectedCandidate");
+
+            // TODO: Send the candidate ID to the server to update the database
+            // Replace this with your actual AJAX request
+
+            // Redirect to the home page
+            window.location.href = "/home";
+        }
+
+        function cancelVote() {
+            // Hide the confirm popup
+            const confirmPopup = document.getElementById("confirmPopup");
+            confirmPopup.style.display = "none";
+
+            // Remove the stored candidate ID
+            sessionStorage.removeItem("selectedCandidate");
+        }
+    </script>
+</body>
+</html>

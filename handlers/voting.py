@@ -58,15 +58,3 @@ class VotingHandler:
             # Close the database connection
             cursor.close()
             self.db_connector.close_connection()
-
-
-# Example usage:
-# Replace the values with actual data from your application
-# student_id = 1
-# term_id = 1
-# candidate_id = 2
-# position_id = 3
-#
-# vote_handler = Vote()
-# result_message = vote_handler.handle_vote(student_id, term_id, candidate_id, position_id)
-# print(result_message)
