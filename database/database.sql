@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS term (
 
 CREATE TABLE IF NOT EXISTS positions (
   `position_id` INT AUTO_INCREMENT PRIMARY KEY,
-  `name_of_position` VARCHAR(255) NOT NULL,
+  `position` ENUM('delegate','finance','president','secretary general','social welfare','gender'),
   `rules` TEXT,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -43,12 +43,14 @@ CREATE TABLE IF NOT EXISTS candidates (
   `position_id` INT,
   `no_of_votes` INT,
   `department` ENUM('SCM', 'SBE', 'SCCD'),
-  `candidate_type` ENUM('delegate','finance','president','secretary general','social welfare','gender')
+  `position` ENUM('delegate','finance','president','secretary general','social welfare','gender'),
   `deleted_at` TIMESTAMP,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (term_id) REFERENCES term(term_id),
+  FOREIGN KEY (position) REFERENCES positions(position),
   FOREIGN KEY (student_id) REFERENCES students(student_id),
+  FOREIGN KEY (department) REFERENCES students(department),
   FOREIGN KEY (position_id) REFERENCES positions(position_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
