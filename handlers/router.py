@@ -3,6 +3,8 @@ import os, sys
 from http.server import SimpleHTTPRequestHandler
 from http.cookies import SimpleCookie
 
+from handlers.voting import VotingHandler
+
 path = os.path.abspath("../")
 sys.path.append(path)
 
@@ -84,6 +86,35 @@ class Router(SimpleHTTPRequestHandler):
         elif self.path == "/register-student":
             login_handler = LoginHandler(self)
             login_handler.handle_student_registration()
+        if self.path == "/vote":
+            # if voted:
+            #     # User has already voted, redirect to the results page
+            #     self.send_response(303)  # 303 See Other
+            #     self.send_header("Location", "/results")
+            #     self.end_headers()
+            # else:
+            #     # Handle the form submission
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length).decode("utf-8")
+
+            # Parse the form data (you may need to adjust this based on your form structure)
+            form_data = {param.split('=')[0]: param.split('=')[1] for param in post_data.split('&')}
+
+            # Extract relevant data from the form data (e.g., candidate_id, term_id, student_id)
+            candidate_id = form_data.get('candidate_id')
+            term_id = form_data.get('term_id')
+            student_id = form_data.get('student_id')
+
+            # Create an instance of VotingHandler
+            voting_handler = VotingHandler()
+
+            # Call a method in VotingHandler to update the database
+            result_message = voting_handler.handle_vote(student_id, term_id, candidate_id)
+
+            # Redirect to the results page
+            self.send_response(303)  # 303 See Other
+            self.send_header("Location", "/results")
+            self.end_headers()
         else:
             self.send_response(404)
             self.end_headers()
@@ -95,13 +126,29 @@ class Router(SimpleHTTPRequestHandler):
         token = cookie.get('token').value if 'token' in cookie else None
         return token
 
+    def handle_logout(self):
+        # Invalidate the token on the server side (e.g., remove the session)
+        # ...
+
+        # Clear the token from the user's browser
+        self.send_response(302)  # 302 Found (redirect)
+        self.send_header("Location", "/login")  # Redirect to the login page
+        self.send_header("Set-Cookie", "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT")  # Clear the token cookie
+        self.end_headers()
+
     def home_route(self):
         print("I am at home")
         # @TODO IMPLEMENT LOGIC FOR CHECKING IF VOTED OR IF TIME TO VOTE BLAH BLAH
         # get token from request and print it out.
         token = self.get_token_from_request()
         print("I have token.")
-        if type(token) is str:
+        if token is None:
+            # Token is missing, redirect to the login page
+            self.send_response(303)
+            self.send_header("Location", "/login")
+            self.end_headers()
+            return
+        elif type(token) is str:
             print(f"[+] Token is {token}")
             # call home
             home = Home(self)
@@ -112,13 +159,13 @@ class Router(SimpleHTTPRequestHandler):
                     print(f"Usertype is: {user_type}")
                     match user_type:
                         case "student":
-                            home.HandleStudentHome()
+                            home.handle_student_home()
                         case "delegate":
-                            home.HandleDelegate()
+                            home.handle_delegate()
                         case "polling_officer":
-                            home.HandlePollingOfficer()
+                            home.handle_polling_officer()
                         case "admin":
-                            home.HandleAdmin()
+                            home.handle_admin()
                 else:
                     # Handle the case where 'user_type' is not present in the payload
                     self.send_response(400)
@@ -134,34 +181,9 @@ class Router(SimpleHTTPRequestHandler):
                 with open("templates/student_login.html", "rb") as file:
                     self.wfile.write(file.read())
         else:
-            # Redirect to login
+            # Redirect to log in
             self.send_response(400)
             self.send_header("Content-type", "text/html")
             self.end_headers()
             with open("templates/student_login.html", "rb") as file:
                 self.wfile.write(file.read())
-
-
-"""
-    tokenUserTypes = 'student,admin,delegate,polling_officer
-    class HomePage:
-        # check if user has logged in
-            if not Lg In
-        # if user has logged in, get token and unmarshal the payload
-            # if student
-                check if voted
-                  gmgbkgkthoemojhtojjtjoihrjth  if voted, redirect to results page
-                if not voted
-                    check if voting is on:
-                        if on: redirect to voting
-                        if not: redirect to results
-            # if user:
-                if delegate: check if delegate voting is on
-                    if on: let them vote
-                    if not: redirect to results page
-                if admin:
-                    redirect to admin page
-                if polling officer:
-                    # they should have a polling officer admin page or something
-
-"""
