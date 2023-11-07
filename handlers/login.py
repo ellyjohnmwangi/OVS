@@ -17,7 +17,6 @@ from modules.student import Student
 import utils.logger
 from utils.utils import Helpers as hps
 
-
 path = os.path.abspath("../")
 sys.path.append(path)
 
@@ -117,6 +116,7 @@ class LoginHandler:
                 html_content = html_content.replace("{{wrong_password_provided}}", error_message)
                 # Send the modified HTML content as the response
                 self.request_handler.wfile.write(html_content.encode())
+
     def handle_authenticate_user(self):
         # Handle the authentication logic for admin login
         content_length = int(self.request_handler.headers["Content-Length"])
