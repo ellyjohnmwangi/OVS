@@ -15,6 +15,12 @@ import string
 SECRET_KEY = 'OVS'
 
 
+def generate_random_string():
+    random_string_length = secrets.randbelow(6) + 10
+    characters = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(characters) for _ in range(random_string_length))
+
+
 class Helpers:
     # Email validation
     def IsValidEmail(email):
@@ -40,7 +46,7 @@ class Helpers:
             'email': email,
             'user_id': user_id,
             'user_type': user_type,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)
         }
         return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -49,7 +55,7 @@ class Helpers:
             'student_id': student_id,
             'department': department,
             'user_type': 'student',
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
         }
         return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -63,8 +69,3 @@ class Helpers:
             return None
         except jwt.DecodeError:
             return None
-
-    def generate_random_string(self):
-        random_string_length = secrets.randbelow(6) + 10
-        characters = string.ascii_letters + string.digits
-        return ''.join(secrets.choice(characters) for _ in range(random_string_length))
