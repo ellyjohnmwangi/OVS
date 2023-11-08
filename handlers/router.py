@@ -76,6 +76,7 @@ class Router(SimpleHTTPRequestHandler):
             self.end_headers()
             with open("templates/list-positions.html", "rb") as file:
                 self.wfile.write(file.read())
+        # End of po GET routes
         else:
             # Serve static files
             if self.path.endswith(".css"):
