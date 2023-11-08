@@ -53,8 +53,8 @@
     <div class="confirm-popup" id="confirmPopup">
         <div class="popup-content">
             <p>Confirm your vote?</p>
-            <button onclick="confirmAndRedirect()">Yes</button>
-            <button onclick="cancelVote()">No</button>
+            <button class="button-green" onclick="confirmAndRedirect()">Yes</button>
+            <button class="button-red" onclick="cancelVote()">No</button>
         </div>
     </div>
 
@@ -73,10 +73,10 @@
             const candidateId = sessionStorage.getItem("selectedCandidate");
 
             // TODO: Send the candidate ID to the server to update the database
-            // Replace this with your actual AJAX request
+            // TODO: Replace this with your actual AJAX request
 
             // Redirect to the home page
-            window.location.href = "/home";
+            window.location.href = "/";
         }
 
         function cancelVote() {
