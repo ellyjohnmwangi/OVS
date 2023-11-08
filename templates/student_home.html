@@ -106,15 +106,15 @@
 											<table class="table mb-0">
 												<tbody>
 													<tr>
-														<td>Chrome</td>
+														<td>SCM</td>
 														<td class="text-end">4306</td>
 													</tr>
 													<tr>
-														<td>Firefox</td>
+														<td>SBE</td>
 														<td class="text-end">3801</td>
 													</tr>
 													<tr>
-														<td>IE</td>
+														<td>SCCD</td>
 														<td class="text-end">1689</td>
 													</tr>
 												</tbody>
@@ -162,9 +162,9 @@
 			gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
 			// Line chart
 			new Chart(document.getElementById("chartjs-dashboard-line"), {
-				type: "line",
+				type: "bar",
 				data: {
-					labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+					labels: ["Candidate 1", "Candidate 2", "Candidate 3", "Candidate 4", "Candidate 5", "Candidate 6", "Candidate 7", "Candidate 8", "Candidate 9", "Candidate 10", "Candidate 11", "Candidate 12"],
 					datasets: [{
 						label: "Sales ($)",
 						fill: true,
@@ -230,7 +230,7 @@
 			new Chart(document.getElementById("chartjs-dashboard-pie"), {
 				type: "pie",
 				data: {
-					labels: ["Chrome", "Firefox", "IE"],
+					labels: ["SCM", "SBE", "SCCD"],
 					datasets: [{
 						data: [4306, 3801, 1689],
 						backgroundColor: [
