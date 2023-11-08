@@ -84,9 +84,8 @@
     </style>
 </head>
 <body>
-    <div id="main">
+<!--    <div id="main">-->
         <h1>Vote for Candidates</h1>
-
         <div class="candidate-grid">
             <!-- Candidate 1 -->
             <div class="candidate-container">
@@ -138,13 +137,12 @@
                 <button class="button-red" onclick="cancelVote()">No</button>
             </div>
         </div>
-    </div>
 
     <script>
        function confirmVote(candidateId) {
     // Check if a candidate has already been selected
-    const selectedCandidateId = sessionStorage.getItem("selectedCandidate");
-    if (!selectedCandidateId) {
+    //     const selectedCandidateId = sessionStorage.getItem("selectedCandidate");
+    //     if (!selectedCandidateId) {
         // Show the confirmation popup
         const confirmPopup = document.getElementById("confirmPopup");
         confirmPopup.style.display = "flex";
@@ -152,7 +150,6 @@
         // Store the selected candidate ID for later use
         sessionStorage.setItem("selectedCandidate", candidateId);
         }
-    }
 
         function confirmAndRedirect() {
             // Get the selected candidate ID from storage
