@@ -43,7 +43,8 @@ class Router(SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            with open("templates/student_voting.html", "rb") as file:
+            #with open("templates/student_voting.html", "rb") as file:
+            with open("templates/votting.html", "rb") as file:
                 self.wfile.write(file.read())
         #This should be abstracted to handlePO class
         elif self.path == "/po":

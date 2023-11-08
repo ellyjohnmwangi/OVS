@@ -77,6 +77,15 @@ class LoginHandler:
         with open("templates/user_login.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
 
+
+    def handle_logout(self):
+        # get the token
+        # update the token
+        # set the tyoken as the new cookie
+        # send the response
+        pass
+
+
     def handle_authenticate_student(self):
         # Handle the authentication logic for student login
         content_length = int(self.request_handler.headers["Content-Length"])

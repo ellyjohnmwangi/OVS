@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+	<meta name="author" content="AdminKit">
+	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="shortcut icon" href="/static/img/icons/icon-48x48.png" />
+
+	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+	<title>Dashboard | Votting</title>
+
+	<link href="/static/css/app.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar js-sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" href="/">
+          <span class="align-middle">OVS</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Pages
+					</li>
+
+					<li class="sidebar-item active">
+						<a class="sidebar-link" href="/">
+              <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+            </a>
+					</li>
+
+				</ul>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle js-sidebar-toggle">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                <img src="/static/img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">Student</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-end">
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="/logout">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+    <div class="container-fluid">
+        <h1 class="mt-4">Voting Cards</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Candidate A</h5>
+                        <p class="card-text">Description of Candidate A and their platform.</p>
+                        <button class="btn btn-primary vote-button" data-candidate="Candidate A" data-position="Position A" data-toggle="modal" data-target="#votingModal">Vote for Candidate A</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Candidate B</h5>
+                        <p class="card-text">Description of Candidate B and their platform.</p>
+                        <button class="btn btn-primary vote-button" data-candidate="Candidate B" data-position="Position B" data-toggle="modal" data-target="#votingModal">Vote for Candidate B</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Candidate C</h5>
+                        <p class="card-text">Description of Candidate C and their platform.</p>
+                        <button class="btn btn-primary vote-button" data-candidate="Candidate C" data-position="Position C" data-toggle="modal" data-target="#votingModal">Vote for Candidate C</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Candidate D</h5>
+                        <p class="card-text">Description of Candidate D and their platform.</p>
+                        <button class="btn btn-primary vote-button" data-candidate="Candidate D" data-position="Position D" data-toggle="modal" data-target="#votingModal">Vote for Candidate D</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Candidate E</h5>
+                        <p class="card-text">Description of Candidate E and their platform.</p>
+                        <button class="btn btn-primary vote-button" data-candidate="Candidate E" data-position="Position E" data-toggle="modal" data-target="#votingModal">Vote for Candidate E</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add more cards for additional candidates here -->
+        </div>
+    </div>
+</main>
+
+<!-- <div id="votingModal" tabindex="-1" class="modal" tabindex="-1" role="dialog" aria-labelledby="votingModal" aria-hidden="true">-->
+	<div id="votingModal" class="modal" role="dialog" aria-labelledby="votingModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Your Vote</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to vote for <span id="candidateName"></span> for <span id="candidatePosition"></span>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmVote">Confirm Vote</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+								<a class="text-muted" href="http://localhost:8000/" target="_blank"><strong>OVS</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-end">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="/support" target="_blank">Support</a>
+								</li>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="/terms" target="_blank">Terms</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="/static/js/app.js"></script>
+	<!-- Your existing scripts, including jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> <!-- Load Bootstrap via CDN -->
+
+		<script>
+		        $(document).ready(function () {
+		            $(".vote-button").on("click", function () {
+		                const candidateName = $(this).data("candidate");
+		                const candidatePosition = $(this).data("position");
+
+		                // Update modal content
+		                $("#candidateName").text(candidateName);
+		                $("#candidatePosition").text(candidatePosition);
+
+		                // Handle confirmation of the vote
+		                $("#confirmVote").on("click", function () {
+		                    // Perform AJAX vote submission here
+		                    // You can make an AJAX request to the server to record the vote
+		                    // Example:
+		                    $.ajax({
+		                        type: "POST",
+		                        url: "/submit-vote",
+		                        data: { candidate: candidateName, position: candidatePosition },
+		                        success: function (response) {
+		                            // Handle the success response, e.g., show a confirmation message
+		                            alert("Vote submitted successfully!");
+		                            // Close the modal after confirmation
+		                            $("#votingModal").modal("hide");
+		                        },
+		                        error: function (error) {
+		                            // Handle the error, e.g., show an error message
+		                            alert("Vote submission failed. Please try again later.");
+		                        }
+		                    });
+		                });
+		            });
+		        });
+		    </script>
+
+
+</body>
+
+</html>
