@@ -45,11 +45,36 @@ class Router(SimpleHTTPRequestHandler):
             self.end_headers()
             with open("templates/student_voting.html", "rb") as file:
                 self.wfile.write(file.read())
+        #This should be abstracted to handlePO class
         elif self.path == "/po":
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
             with open("templates/po-home.html", "rb") as file:
+                self.wfile.write(file.read())
+        elif self.path == "/list-elections":
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            with open("templates/list-elections.html", "rb") as file:
+                self.wfile.write(file.read())
+        elif self.path == "/list-candidates":
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            with open("templates/list-candidates.html", "rb") as file:
+                self.wfile.write(file.read())
+        elif self.path == "/view-candidates":
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            with open("templates/view-candidates.html", "rb") as file:
+                self.wfile.write(file.read())
+        elif self.path == "/list-positions":
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            with open("templates/list-positions.html", "rb") as file:
                 self.wfile.write(file.read())
         else:
             # Serve static files
