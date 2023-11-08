@@ -55,7 +55,7 @@ class Helpers:
             'student_id': student_id,
             'department': department,
             'user_type': 'student',
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)
         }
         return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
