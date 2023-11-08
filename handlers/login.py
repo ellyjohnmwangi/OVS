@@ -5,16 +5,16 @@
     It imports the db_connector and initiates it's own db connection does it's logic then closse it up
 """
 
+import http.cookies
 import os
 import sys
-import http.cookies
 from urllib.parse import unquote
-# Import the specific functions or classes you need
-from utils.jwt_token import CreateStudentJWTToken, CreateUserJWTToken
-from modules.db_connector import DBConnector
-from modules.authenticator import Authenticator
-from modules.student import Student
+
 import utils.logger
+from modules.authenticator import Authenticator
+# Import the specific functions or classes you need
+from modules.db_connector import DBConnector
+from modules.student import Student
 from utils.utils import Helpers as hps
 
 path = os.path.abspath("../")
@@ -93,7 +93,7 @@ class LoginHandler:
             # Create a Cookie object and set the token as a cookie
             cookies = http.cookies.SimpleCookie()
             cookies["token"] = str(token)
-            print(f"[+] Validated student with id {student_id} and token genereated {str(token)}")
+            print(f"[+] Validated student with id {student_id} and token generated {str(token)}")
             # Get the cookie header as a string
             cookie_header = cookies.output(header="", sep="; ")
 
