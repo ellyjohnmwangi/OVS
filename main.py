@@ -19,7 +19,7 @@ from handlers import router
 path = os.path.abspath("./handlers")
 sys.path.append(path)
 PORT = 8000
-IsVottingOn  = False
+IsVottingOn = False
 
 class MyTCPServer(socketserver.TCPServer):
     allow_reuse_address = True
