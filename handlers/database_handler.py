@@ -3,20 +3,23 @@ import json
 from modules.db_connector import DBConnector
 
 
-def get_candidates_data():
-    db_connector = DBConnector()
-    connection = db_connector.get_connection()
-    cursor = connection.cursor()
+class CandidateHandler:
+    def __init__(self):
+        self.db_connector = DBConnector()
 
-    select_query = "SELECT candidate_id, candidate_name, position FROM candidates"
-    cursor.execute(select_query)
-    candidate_data = cursor.fetchall()
+    def get_candidates_data(self):
+        connection = self.db_connector.get_connection()
+        cursor = connection.cursor()
 
-    cursor.close()
-    db_connector.close_connection()
+        select_query = "SELECT candidate_id, candidate_name, position FROM candidates"
+        cursor.execute(select_query)
+        candidate_data = cursor.fetchall()
 
-    # Convert the data to a list of dictionaries
-    candidates = [{"candidate_id": candidate[0], "candidate_name": candidate[1], "position": candidate[2]} for candidate
-                  in candidate_data]
+        cursor.close()
+        self.db_connector.close_connection()
 
-    return json.dumps(candidates)
+        # Convert the data to a list of dictionaries
+        candidates = [{"candidate_id": candidate[0], "candidate_name": candidate[1], "position": candidate[2]} for candidate
+                      in candidate_data]
+
+        return json.dumps(candidates)
