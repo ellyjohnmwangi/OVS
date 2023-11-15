@@ -5,8 +5,9 @@ from handlers.login import LoginHandler
 from handlers.database_handler import CandidateHandler
 from handlers.home import Home
 from utils.utils import Helpers as hps
+import logging
 
-from handlers.voting import VotingHandler
+logging.basicConfig(filename='server.log', level=logging.INFO)
 
 path = os.path.abspath("../")
 sys.path.append(path)
@@ -36,8 +37,18 @@ class Router(SimpleHTTPRequestHandler):
             login_handler = LoginHandler(self)
             login_handler.handle_get_student()
         elif self.path == "/get-candidates":
+            # Create an instance of CandidateHandler
             candidate_handler = CandidateHandler()
-            candidate_handler.get_candidates_data()
+
+            # Get candidates data as a JSON string
+            candidates_data = candidate_handler.get_candidates_data()
+
+            # Send HTTP response with candidates data
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(candidates_data.encode('utf-8'))
+
         elif self.path == "/admin":
             login_handler = LoginHandler(self)
             login_handler.handle_get_user()
