@@ -1,16 +1,15 @@
-# router.py
 import os, sys
 from http.server import SimpleHTTPRequestHandler
 from http.cookies import SimpleCookie
+from handlers.login import LoginHandler
+from handlers.database_handler import CandidateHandler
+from handlers.home import Home
+from utils.utils import Helpers as hps
 
 from handlers.voting import VotingHandler
 
 path = os.path.abspath("../")
 sys.path.append(path)
-
-from handlers.login import LoginHandler
-from handlers.home import Home
-from utils.utils import Helpers as hps
 
 """
     Our good route only accepts two methods, a GET and and POST request
@@ -36,6 +35,9 @@ class Router(SimpleHTTPRequestHandler):
         elif self.path == "/login":
             login_handler = LoginHandler(self)
             login_handler.handle_get_student()
+        elif self.path == "/get-candidates":
+            candidate_handler = CandidateHandler()
+            candidate_handler.get_candidates_data()
         elif self.path == "/admin":
             login_handler = LoginHandler(self)
             login_handler.handle_get_user()
@@ -45,7 +47,7 @@ class Router(SimpleHTTPRequestHandler):
             self.end_headers()
             with open("templates/student_voting.html", "rb") as file:
                 self.wfile.write(file.read())
-        #This should be abstracted to handlePO class
+        # This should be abstracted to handlePO class
         elif self.path == "/po":
             self.send_response(200)
             self.send_header("Content-type", "text/html")
