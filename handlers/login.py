@@ -12,7 +12,6 @@ from urllib.parse import unquote
 
 import utils.logger
 from modules.authenticator import Authenticator
-# Import the specific functions or classes you need
 from modules.db_connector import DBConnector
 from modules.student import Student
 from utils.utils import Helpers as hps
