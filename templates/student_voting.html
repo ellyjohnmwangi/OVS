@@ -1,214 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Online Voting System</title>
-    <style>
-        /* Add your CSS styles here */
-        body {
-            margin: 0;
-            padding: 0;
-        }
+    <head>
+        <title>Online Voting System</title>
+        <style>
+            /* Add your CSS styles here */
+            body {
+                margin: 0;
+                padding: 0;
+            }
 
-        .candidate-container {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 10px;
-            width: 200px; /* Reduce container size */
-        }
+            .candidate-container {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin: 10px;
+                width: 200px; /* Reduce container size */
+            }
 
-        .candidate-container h3 {
-            font-size: 18px;
-        }
+            .candidate-container h3 {
+                font-size: 18px;
+            }
 
-        .button-green {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
+            .button-green {
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 10px 15px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
 
-        .confirm-popup {
-            background-color: rgba(0, 0, 0, 0.7);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
+            .confirm-popup {
+                background-color: rgba(0, 0, 0, 0.7);
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
 
-        .button-red {
-            background-color: #f44336; /* Red color */
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
+            .button-red {
+                background-color: #f44336; /* Red color */
+                border: none;
+                color: white;
+                padding: 10px 15px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
 
-        .popup-content {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
+            .popup-content {
+                background: white;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+            }
 
-        /* Define a grid container */
-        .candidate-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
-            gap: 20px; /* Spacing between columns and rows */
-        }
+            /* Define a grid container */
+            .candidate-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
+                gap: 20px; /* Spacing between columns and rows */
+            }
 
-        /* Define a candidate container */
-        .candidate-container {
-            background-color: #f0f0f0;
-            padding: 20px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-<!--    <div id="main">-->
-        <h1>Vote for Candidates</h1>
-<div class="candidate-grid" id="candidateContainer"></div>
-<!--            &lt;!&ndash; Candidate 1 &ndash;&gt;-->
-<!--            <div class="candidate-container">-->
-<!--                <h3>Candidate 1</h3>-->
-<!--                <p>Position 1</p>-->
-<!--                <button class="button-green" onclick="confirmVote(1)">Vote</button>-->
-<!--            </div>-->
+            /* Define a candidate container */
+            .candidate-container {
+                background-color: #f0f0f0;
+                padding: 20px;
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+    <!--    <div id="main">-->
+            <h1>Vote for Candidates</h1>
+            <div class="candidate-grid" id="candidateContainer"></div>
 
-<!--            &lt;!&ndash; Candidate 2 &ndash;&gt;-->
-<!--            <div class="candidate-container">-->
-<!--                <h3>Candidate 2</h3>-->
-<!--                <p>Position 2</p>-->
-<!--                <button class="button-green" onclick="confirmVote(2)">Vote</button>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Candidate 3 &ndash;&gt;-->
-<!--            <div class="candidate-container">-->
-<!--                <h3>Candidate 3</h3>-->
-<!--                <p>Position 3</p>-->
-<!--                <button class="button-green" onclick="confirmVote(3)">Vote</button>-->
-<!--            </div>-->
-<!--            &lt;!&ndash; Candidate 4 &ndash;&gt;-->
-<!--            <div class="candidate-container">-->
-<!--                <h3>Candidate 4</h3>-->
-<!--                <p>Position 4</p>-->
-<!--                <button class="button-green" onclick="confirmVote(4)">Vote</button>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Candidate 5 &ndash;&gt;-->
-<!--            <div class="candidate-container">-->
-<!--                <h3>Candidate 5</h3>-->
-<!--                <p>Position 5</p>-->
-<!--                <button class="button-green" onclick="confirmVote(5)">Vote</button>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Candidate 6 &ndash;&gt;-->
-<!--            <div class="candidate-container">-->
-<!--                <h3>Candidate 6</h3>-->
-<!--                <p>Position 6</p>-->
-<!--                <button class="button-green" onclick="confirmVote(6)">Vote</button>-->
-<!--            </div>-->
-<!--        </div>-->
-
-        <!-- Confirm Popup -->
-        <div class="confirm-popup" id="confirmPopup">
-            <div class="popup-content">
-                <p>Confirm your vote?</p>
-                <button class="button-green" onclick="confirmAndRedirect()">Yes</button>
-                <button class="button-red" onclick="cancelVote()">No</button>
+            <!-- Confirm Popup -->
+            <div class="confirm-popup" id="confirmPopup">
+                <div class="popup-content">
+                    <p>Confirm your vote?</p>
+                    <button class="button-green" onclick="confirmAndRedirect()">Yes</button>
+                    <button class="button-red" onclick="cancelVote()">No</button>
+                </div>
             </div>
-        </div>
 
-    <script>
-        function confirmAndRedirect() {
-            // Get the selected candidate ID from storage
-            const candidate_id = sessionStorage.getItem("selectedCandidate");
+        <script>
+            function confirmAndRedirect() {
+                // Get the selected candidate ID from storage
+                const candidate_id = sessionStorage.getItem("selectedCandidate");
+                // Replace this with your actual AJAX request
 
-            // TODO: Send the candidate ID to the server to update the database
-            // Replace this with your actual AJAX request
+                // Redirect to the home page
+                window.location.href = "/";
+            }
 
-            // Redirect to the home page
-            window.location.href = "/";
-        }
+            function cancelVote() {
+                // Hide the confirmation popup
+                const confirmPopup = document.getElementById("confirmPopup");
+                confirmPopup.style.display = "none"; // Fixed the typo here
+                // Remove the stored candidate ID
+                sessionStorage.removeItem("selectedCandidate");
+            }
 
-        function cancelVote() {
-            // Hide the confirmation popup
-            const confirmPopup = document.getElementById("confirmPopup");
-            confirmPopup.style.display = "none"; // Fixed the typo here
-            // Remove the stored candidate ID
-            sessionStorage.removeItem("selectedCandidate");
-        }
+            // Update your confirmVote function to include the candidate data fetching logic
+            function confirmVote(candidateId) {
+                const confirmPopup = document.getElementById("confirmPopup");
+                confirmPopup.style.display = "flex";
 
-        // Update your confirmVote function to include the candidate data fetching logic
-        function confirmVote(candidateId) {
-            const confirmPopup = document.getElementById("confirmPopup");
-            confirmPopup.style.display = "flex";
+                // Store the selected candidate ID for later use
+                sessionStorage.setItem("selectedCandidate", candidateId);
 
-            // Store the selected candidate ID for later use
-            sessionStorage.setItem("selectedCandidate", candidateId);
+                // Fetch candidate data
+                fetchCandidatesData();
+            }
+            // Function to fetch candidate data from the server
+            function fetchCandidatesData() {
+                console.log("Fetching candidates data...");
+                fetch('/get-candidates')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Populate the candidates container with the fetched data
+                        populateCandidates(data);
+                        console.log(data);
 
-            // Fetch candidate data
-            fetchCandidatesData();
-        }
-        // Function to fetch candidate data from the server
-        function fetchCandidatesData() {
-            fetch('/get-candidates')
-                .then(response => response.json())
-                .then(data => {
-                    // Populate the candidates container with the fetched data
-                    populateCandidates(data);
-                })
-                .catch(error => console.error('Error fetching candidates:', error));
-        }
-        // Function to populate the candidates container with data
-function populateCandidates(data) {
-    const candidatesContainer = document.getElementById("candidatesContainer");
+                    })
+                    .catch(error => console.error('Error fetching candidates:', error));
 
-    // Clear existing content
-    candidatesContainer.innerHTML = "";
+            }
+            // Function to populate the candidates container with data
+            function populateCandidates(data) {
+                const candidatesContainer = document.getElementById("candidateContainer");
 
-    // Iterate through the candidate data and create HTML elements
-    data.forEach(candidate => {
-        const candidateContainer = document.createElement("div");
-        candidateContainer.classList.add("candidate-container");
+                // Clear existing content
+                candidatesContainer.innerHTML = "";
 
-        const heading = document.createElement("h3");
-        heading.innerText = candidate.name; // Assuming there is a 'name' property in your candidate data
+                // Iterate through the candidate data and create HTML elements
+                data.forEach(candidate => {
+                    const candidateDiv = document.createElement("div");
+                    candidateDiv.classList.add("candidate-container");
 
-        const position = document.createElement("p");
-        position.innerText = `Position: ${candidate.position}`;
+                    const heading = document.createElement("h3");
+                    heading.innerText = `Candidate ${candidate.candidate_id}`;
 
-        const voteButton = document.createElement("button");
-        voteButton.classList.add("button-green");
-        voteButton.innerText = "Vote";
-        voteButton.addEventListener("click", () => confirmVote(candidate.id)); // Assuming there is an 'id' property in your candidate data
+                    const position = document.createElement("p");
+                    position.innerText = `Position: ${candidate.position_id}`;
 
-        candidateContainer.appendChild(heading);
-        candidateContainer.appendChild(position);
-        candidateContainer.appendChild(voteButton);
+                    const voteButton = document.createElement("button");
+                    voteButton.classList.add("button-green");
+                    voteButton.innerText = "Vote";
+                    voteButton.addEventListener("click", () => confirmVote(candidate.candidate_id));
 
-        candidatesContainer.appendChild(candidateContainer);
-    });
-}
-    </script>
-</body>
+                    candidateDiv.appendChild(heading);
+                    candidateDiv.appendChild(position);
+                    candidateDiv.appendChild(voteButton);
+
+                    candidatesContainer.appendChild(candidateDiv);
+                });
+            }
+            // Fetch candidate data when the DOM content is loaded
+            document.addEventListener("DOMContentLoaded", fetchCandidatesData);
+
+
+        </script>
+    </body>
 </html>
