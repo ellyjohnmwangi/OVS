@@ -12,7 +12,7 @@ class DBConnector:
             'host': 'localhost',
             'user': 'root',
             'password': '',
-            'database': 'ovs_student',
+            'database': 'ovs_students',
             # 'auth_plugin': 'mysql_native_password'
         }
 
