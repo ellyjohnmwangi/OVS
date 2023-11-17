@@ -72,8 +72,9 @@ class VoteHandler:
             cursor = connection.cursor()
 
             # Update the vote count for the specified candidate_id
-            update_query = f"UPDATE candidates SET vote_count = vote_count + 1 WHERE candidate_id = {candidate_id}"
-            cursor.execute(update_query)
+            update_query = "UPDATE candidates SET vote_count = vote_count + 1 WHERE candidate_id = %s"
+            cursor.execute(update_query, (candidate_id,))
+            print(update_query)
             connection.commit()
 
             cursor.close()
