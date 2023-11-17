@@ -1,9 +1,11 @@
+import json
 import os, sys
 from http.server import SimpleHTTPRequestHandler
 from http.cookies import SimpleCookie
 from handlers.login import LoginHandler
 from handlers.database_handler import CandidateHandler
 from handlers.home import Home
+from handlers.voting import VoteHandler
 from utils.utils import Helpers as hps
 import logging
 
@@ -37,17 +39,24 @@ class Router(SimpleHTTPRequestHandler):
             login_handler = LoginHandler(self)
             login_handler.handle_get_student()
         elif self.path == "/get-candidates":
-            # Create an instance of CandidateHandler
-            candidate_handler = CandidateHandler()
+            try:
+                # Create an instance of CandidateHandler
+                candidate_handler = CandidateHandler()
 
-            # Get candidates data as a JSON string
-            candidates_data = candidate_handler.get_candidates_data()
+                # Get candidates data as a JSON string
+                candidates_data = candidate_handler.get_candidates_data()
 
-            # Send HTTP response with candidates data
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            self.wfile.write(candidates_data.encode('utf-8'))
+                # Send HTTP response with candidates data
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(candidates_data.encode('utf-8'))
+            except Exception as e:
+                # Handle exceptions (e.g., database connection error)
+                self.send_response(500)
+                self.send_header("Content-type", "text/plain")
+                self.end_headers()
+                self.wfile.write(f"Internal Server Error: {str(e)}".encode('utf-8'))
 
         elif self.path == "/admin":
             login_handler = LoginHandler(self)
@@ -125,35 +134,21 @@ class Router(SimpleHTTPRequestHandler):
         elif self.path == "/register-student":
             login_handler = LoginHandler(self)
             login_handler.handle_student_registration()
-        if self.path == "/vote":
-            # if voted:
-            #     # User has already voted, redirect to the results page
-            #     self.send_response(303)  # 303 See Other
-            #     self.send_header("Location", "/results")
-            #     self.end_headers()
-            # else:
-            #     # Handle the form submission
-            content_length = int(self.headers['Content-Length'])
-            post_data = self.rfile.read(content_length).decode("utf-8")
+        elif self.path.startswith("/vote/"):
+            candidate_id = self.path.split("/")[2]  # Extract candidate_id from the URL
+            vote_handler = VoteHandler()
 
-            # Parse the form data (you may need to adjust this based on your form structure)
-            form_data = {param.split('=')[0]: param.split('=')[1] for param in post_data.split('&')}
+            # Call the handle_vote_count method from VoteHandler
+            result_message = vote_handler.handle_vote_count(candidate_id)
 
-            # Extract relevant data from the form data (e.g., candidate_id, term_id, student_id)
-            candidate_id = form_data.get('candidate_id')
-            term_id = form_data.get('term_id')
-            student_id = form_data.get('student_id')
+            response = vote_handler.get_response(result_message)
 
-            # Create an instance of VotingHandler
-            voting_handler = VotingHandler()
-
-            # Call a method in VotingHandler to update the database
-            result_message = voting_handler.handle_vote(student_id, term_id, candidate_id)
-
-            # Redirect to the results page
-            self.send_response(303)  # 303 See Other
-            self.send_header("Location", "/results")
+            # Respond to the client with the JSON-encoded response
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
             self.end_headers()
+            self.wfile.write(response)
+
         else:
             self.send_response(404)
             self.end_headers()
