@@ -1,4 +1,5 @@
 import hashlib
+import json
 
 from modules.db_connector import DBConnector
 
@@ -58,3 +59,34 @@ class VotingHandler:
             # Close the database connection
             cursor.close()
             self.db_connector.close_connection()
+
+
+class VoteHandler:
+    def __init__(self):
+        self.db_connector = DBConnector()
+
+    def handle_vote_count(self, candidate_id):
+        try:
+            # Connect to the database and update the vote count
+            connection = self.db_connector.get_connection()
+            cursor = connection.cursor()
+
+            # Update the vote count for the specified candidate_id
+            update_query = f"UPDATE candidates SET vote_count = vote_count + 1 WHERE candidate_id = {candidate_id}"
+            cursor.execute(update_query)
+            connection.commit()
+
+            cursor.close()
+            self.db_connector.close_connection()
+
+            return {"message": "Vote counted successfully"}
+        except Exception as e:
+            # Handle exceptions, log errors, etc.
+            return {"message": f"Error counting vote: {str(e)}"}
+
+    def get_response(self, result_message):
+        # Convert the result_message dictionary to a JSON-encoded string
+        json_response = json.dumps(result_message)
+        # Encode the JSON string to bytes using UTF-8
+        encoded_response = json_response.encode('utf-8')
+        return encoded_response
