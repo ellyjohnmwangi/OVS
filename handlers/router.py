@@ -137,17 +137,24 @@ class Router(SimpleHTTPRequestHandler):
         elif self.path.startswith("/vote/"):
             candidate_id = self.path.split("/")[2]  # Extract candidate_id from the URL
             vote_handler = VoteHandler()
+            try:
+                # Call the handle_vote_count method from VoteHandler
+                result_message = vote_handler.handle_vote_count(candidate_id)
 
-            # Call the handle_vote_count method from VoteHandler
-            result_message = vote_handler.handle_vote_count(candidate_id)
+                response = vote_handler.get_response(result_message)
 
-            response = vote_handler.get_response(result_message)
-
-            # Respond to the client with the JSON-encoded response
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            self.wfile.write(response)
+                # Respond to the client with the JSON-encoded response
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(response)
+            except Exception as e:
+                # Log the exception
+                print(f"Exception in handle_vote_count: {str(e)}")
+                self.send_response(500)
+                self.send_header("Content-type", "text/plain")
+                self.end_headers()
+                self.wfile.write(f"Internal Server Error: {str(e)}".encode('utf-8'))
 
         else:
             self.send_response(404)
