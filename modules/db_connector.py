@@ -9,7 +9,7 @@ import mysql
 class DBConnector:
     def __init__(self):
         self.db_config = {
-            'host': 'localhost',
+            'host': '127.0.0.1',
             'user': 'root',
             'password': '',
             'database': 'ovs_students',
