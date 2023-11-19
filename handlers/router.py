@@ -223,7 +223,6 @@ class Router(SimpleHTTPRequestHandler):
         # @TODO IMPLEMENT LOGIC FOR CHECKING IF VOTED OR IF TIME TO VOTE BLAH BLAH
         # get token from request and print it out.
         token = self.get_token_from_request()
-        print("I have token.")
         if token is None:
             # Token is missing, redirect to the login page
             self.send_response(303)
