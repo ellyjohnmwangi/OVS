@@ -1,6 +1,7 @@
 import json
 from modules.db_connector import DBConnector
 
+
 class CandidateHandler:
     def __init__(self):
         self.db_connector = DBConnector()
@@ -18,7 +19,7 @@ class CandidateHandler:
         candidate_data = cursor.fetchall()
 
         cursor.close()
-        self.db_connector.close_connection()
+        # self.db_connector.close_connection()
 
         # Convert the data to a list of dictionaries
         candidates = [
@@ -32,3 +33,19 @@ class CandidateHandler:
         ]
 
         return json.dumps(candidates)
+
+    def get_student_id(self, email):
+        connection = self.db_connector.get_connection()
+        cursor = connection.cursor()
+
+        select_student_id_query = "SELECT student_id FROM students WHERE email = %s;"
+        cursor.execute(select_student_id_query, (email,))
+        student_id = cursor.fetchone()
+
+        cursor.close()
+        self.db_connector.close_connection()
+
+        # Extract student ID from the result
+        student_id = student_id[0] if student_id else None
+
+        return student_id

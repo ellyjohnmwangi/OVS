@@ -101,19 +101,27 @@
             function confirmAndRedirect() {
                 // Get the selected candidate ID from storage
                 const candidate_id = sessionStorage.getItem("selectedCandidate");
+
                 // Check if the candidate ID is available
                 if (!candidate_id) {
                     console.error("No selected candidate ID.");
                     return;
                 }
-                // AJAX request to update the candidate vote count
-                fetch(`/vote/${candidate_id}`, {
+
+                // Get the student ID from storage or wherever you have it stored
+                const student_id = sessionStorage.getItem("student_id");
+                console.log("Student ID:", student_id);
+
+
+                // AJAX request to update the candidate vote count and the vote table
+                 fetch(`/vote/${candidate_id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         candidate_id: candidate_id,
+                        student_id: student_id,
                     }),
                 })
                 .then(response => {
@@ -123,13 +131,14 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log("Vote counted successfully:", data);
+                    console.log("Student ID:", student_id);
+                    console.log("Candidate vote counted successfully:", data);
 
-                // Redirect to the home page
-                window.location.href = "/";
+                    // Additional logic if needed after updating candidate vote count
+                window.location.href = "/dashboard";
                 })
                 .catch(error => {
-                console.error('Error updating vote count:', error);
+                    console.error('Error updating candidate vote count:', error);
                 })
                 .finally(() => {
                     // Hide the confirmation popup
@@ -140,6 +149,7 @@
                     sessionStorage.removeItem("selectedCandidate");
                 });
             }
+
 
 
             function cancelVote() {
