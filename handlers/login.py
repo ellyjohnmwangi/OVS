@@ -6,6 +6,7 @@
 """
 
 import http.cookies
+import json
 import os
 import sys
 from urllib.parse import unquote
@@ -92,16 +93,33 @@ class LoginHandler:
             # Create a Cookie object and set the token as a cookie
             cookies = http.cookies.SimpleCookie()
             cookies["token"] = str(token)
+
             print(f"[+] Validated student with id {student_id} and token generated {str(token)}")
             # Get the cookie header as a string
             cookie_header = cookies.output(header="", sep="; ")
 
-            self.request_handler.send_response(302)  # Redirect response code
-            self.request_handler.send_header("Location", "/")  # Redirect URL
+            # Include student_id in the response data
+            response_data = {
+                "message": "Authentication successful",
+                "student_id": student_id,
+            }
+            print(f"Debug: Student ID in response_data: {student_id}")
+
+            # Include a script block to store student_id in session storage
+            script_block = f"""
+            <script>
+                sessionStorage.setItem("student_id", "{student_id}");
+                window.location.href = "/vote";  // Redirect to the home page
+            </script>
+            """
+
+            self.request_handler.send_response(200)  # OK response code
             self.request_handler.send_header("Content-type", "text/html")
-            # Set the "Set-Cookie" header
-            self.request_handler.send_header("Set-Cookie", cookie_header)
             self.request_handler.end_headers()
+
+            # Send the modified response data and script block as HTML
+            self.request_handler.wfile.write((json.dumps(response_data) + script_block).encode('utf-8'))
+
         else:
             utils.logger.log_error("Failed to authenticate student with email " + email)
             self.request_handler.send_response(400)  # Bad request header
