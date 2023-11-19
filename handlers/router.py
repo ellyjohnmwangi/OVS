@@ -134,6 +134,8 @@ class Router(SimpleHTTPRequestHandler):
         if self.path == "/login":
             login_handler = LoginHandler(self)
             login_handler.handle_authenticate_student()
+        elif self.path == "/logout":
+            self.handle_logout()
         elif self.path == "/admin":
             login_handler = LoginHandler(self)
             login_handler.handle_authenticate_user()
@@ -214,7 +216,7 @@ class Router(SimpleHTTPRequestHandler):
 
         # Clear the token from the user's browser
         self.send_response(302)  # 302 Found (redirect)
-        self.send_header("Location", "/login")  # Redirect to the login page
+        self.send_header("Location", "/")  # Redirect to the login page
         self.send_header("Set-Cookie", "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT")  # Clear the token cookie
         self.end_headers()
 
