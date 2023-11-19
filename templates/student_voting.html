@@ -96,7 +96,7 @@
                     <button class="button-red" onclick="cancelVote()">No</button>
                 </div>
             </div>
-
+        <div id="messageContainer"></div>
         <script>
             function confirmAndRedirect() {
                 // Get the selected candidate ID from storage
@@ -105,6 +105,7 @@
                 // Check if the candidate ID is available
                 if (!candidate_id) {
                     console.error("No selected candidate ID.");
+                    showMessage("No Selected Candidate", 'error');
                     return;
                 }
 
@@ -132,8 +133,10 @@
                 })
                 .then(data => {
                     console.log("Student ID:", student_id);
-                    console.log("Candidate vote counted successfully:", data);
+                    console.log("vote success:", data);
 
+                    // Show a pop-up message for success
+                    showMessage(data.message, data.status);
                     // Additional logic if needed after updating candidate vote count
                 window.location.href = "/dashboard";
                 })
@@ -148,6 +151,13 @@
                     // Remove the stored candidate ID
                     sessionStorage.removeItem("selectedCandidate");
                 });
+            }
+
+            function showMessage(message, type) {
+                // You can customize this part based on your styling or use a library for modals
+                alert(`${type.toUpperCase()}: ${message}`);
+                const messageContainer = document.getElementById("messageContainer");
+                messageContainer.innerText = message;
             }
 
 
