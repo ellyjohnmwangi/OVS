@@ -61,7 +61,7 @@
               </a>
 							<div class="dropdown-menu dropdown-menu-end">
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="/logout">Log out</a>
+								<a href="#" onclick="logout()">Logout</a>
 							</div>
 						</li>
 					</ul>
@@ -153,6 +153,31 @@
 	</div>
 
 	<script src="/static/js/app.js"></script>
+
+	<script>
+    function logout() {
+        fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // You can include additional headers or data if needed
+            // body: JSON.stringify({ key: 'value' })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Redirect to the login page or perform other actions
+                window.location.href = '/login';
+            } else {
+                console.error('Logout failed');
+                // Handle error scenarios
+            }
+        })
+        .catch(error => {
+            console.error('Error during logout:', error);
+        });
+    }
+</script>
 
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
