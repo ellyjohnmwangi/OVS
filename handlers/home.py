@@ -17,14 +17,14 @@ class Home:
         self.request_handler.send_response(200)
         self.request_handler.send_header("Content-type", "text/html")
         self.request_handler.end_headers()
-        with open("templates/student_home.html", "rb") as file:
+        with open("templates/dashboard.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
 
     def handle_delegate(self):
         self.request_handler.send_response(200)
         self.request_handler.send_header("Content-type", "text/html")
         self.request_handler.end_headers()
-        with open("templates/student_home.html", "rb") as file:
+        with open("templates/dashboard.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
 
     def handle_admin(self):
