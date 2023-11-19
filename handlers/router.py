@@ -61,6 +61,12 @@ class Router(SimpleHTTPRequestHandler):
         elif self.path == "/admin":
             login_handler = LoginHandler(self)
             login_handler.handle_get_user()
+        elif self.path == "/dashboard":
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            with open("templates/dashboard.html", "rb") as file:
+                self.wfile.write(file.read())
         elif self.path == "/vote":
             self.send_response(200)
             self.send_header("Content-type", "text/html")
@@ -134,12 +140,38 @@ class Router(SimpleHTTPRequestHandler):
         elif self.path == "/register-student":
             login_handler = LoginHandler(self)
             login_handler.handle_student_registration()
+        elif self.path == "/update-vote/":
+            # Extract the JSON data from the request body
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length).decode('utf-8')
+            json_data = json.loads(post_data)
+
+            # Get student_id and candidate_id from the JSON data
+            student_id = json_data.get('student_id')
+            candidate_id = json_data.get('candidate_id')
+
+            # Call the insert_vote method from VoteHandler
+            vote_handler = VoteHandler()
+            result_message = vote_handler.insert_vote(student_id=student_id, candidate_id=candidate_id)
+
+            # Respond to the client with the JSON-encoded response
+            print(f"Response from server: {vote_handler.get_response(result_message)}")
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(vote_handler.get_response(result_message).encode('utf-8'))
+
         elif self.path.startswith("/vote/"):
-            candidate_id = self.path.split("/")[2]  # Extract candidate_id from the URL
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length).decode('utf-8')
+            json_data = json.loads(post_data)
+            student_id = json_data.get('student_id')
+            candidate_id = json_data.get('candidate_id')
             vote_handler = VoteHandler()
             try:
                 # Call the handle_vote_count method from VoteHandler
-                result_message = vote_handler.handle_vote_count(candidate_id)
+                result_message = vote_handler.handle_vote_count(student_id, candidate_id)
 
                 response = vote_handler.get_response(result_message)
 
@@ -165,7 +197,16 @@ class Router(SimpleHTTPRequestHandler):
         # Extract the token from the request's cookies
         cookie = SimpleCookie(self.headers.get('Cookie'))
         token = cookie.get('token').value if 'token' in cookie else None
+        # student_id = cookie.get('student_id').value if 'student_id' in cookie else None
+
         return token
+
+    def get_id_from_request(self):
+        # Extract the token from the request's cookies
+        cookie = SimpleCookie(self.headers.get('Cookie'))
+        student_id = cookie.get('student_id').value if 'student_id' in cookie else None
+
+        return student_id
 
     def handle_logout(self):
         # Invalidate the token on the server side (e.g., remove the session)
@@ -228,3 +269,9 @@ class Router(SimpleHTTPRequestHandler):
             self.end_headers()
             with open("templates/student_login.html", "rb") as file:
                 self.wfile.write(file.read())
+
+    """
+        Main acts as the entry point for the whole project
+        It only calls the router and serves the as per the port
+    """
+
