@@ -12,6 +12,7 @@ import sys
 from urllib.parse import unquote
 
 import utils.logger
+from handlers.voting import VoteHandler
 from modules.authenticator import Authenticator
 from modules.db_connector import DBConnector
 from modules.student import Student
@@ -88,37 +89,46 @@ class LoginHandler:
         auth_result = self.auth.authenticate_student(email, password)
         if auth_result is not None and auth_result[0]:  # Check if authentication succeeded
             _, student_id, department = auth_result
-            # generate token and set as header
-            token = hps.CreateStudentJWTToken(student_id, department)
-            # Create a Cookie object and set the token as a cookie
-            cookies = http.cookies.SimpleCookie()
-            cookies["token"] = str(token)
 
-            print(f"[+] Validated student with id {student_id} and token generated {str(token)}")
-            # Get the cookie header as a string
-            cookie_header = cookies.output(header="", sep="; ")
+            # Check if the student has voted
+            vote_handler = VoteHandler()
+            if vote_handler.has_user_voted(student_id):
+                # User has voted, redirect to the dashboard
+                self.request_handler.send_response(303)
+                self.request_handler.send_header("Location", "/dashboard")
+                self.request_handler.end_headers()
+            else:
+                # User hasn't voted, generate token and redirect to the voting page
+                token = hps.CreateStudentJWTToken(student_id, department)
+                # Create a Cookie object and set the token as a cookie
+                cookies = http.cookies.SimpleCookie()
+                cookies["token"] = str(token)
 
-            # Include student_id in the response data
-            response_data = {
-                "message": "Authentication successful",
-                "student_id": student_id,
-            }
-            print(f"Debug: Student ID in response_data: {student_id}")
+                print(f"[+] Validated")
+                # Get the cookie header as a string
+                cookie_header = cookies.output(header="", sep="; ")
 
-            # Include a script block to store student_id in session storage
-            script_block = f"""
-            <script>
-                sessionStorage.setItem("student_id", "{student_id}");
-                window.location.href = "/vote";  // Redirect to the home page
-            </script>
-            """
+                # Include student_id in the response data
+                response_data = {
+                    "message": "Authentication successful",
+                    "student_id": student_id,
+                }
 
-            self.request_handler.send_response(200)  # OK response code
-            self.request_handler.send_header("Content-type", "text/html")
-            self.request_handler.end_headers()
+                # Include a script block to store student_id in session storage
+                script_block = f"""
+                        <script>
+                            sessionStorage.setItem("student_id", "{student_id}");
+                            window.location.href = "/vote";  // Redirect to the voting page
+                        </script>
+                        """
 
-            # Send the modified response data and script block as HTML
-            self.request_handler.wfile.write((json.dumps(response_data) + script_block).encode('utf-8'))
+                self.request_handler.send_response(200)  # OK response code
+                self.request_handler.send_header("Content-type", "text/html")
+                self.request_handler.send_header("Set-Cookie", cookie_header)
+                self.request_handler.end_headers()
+
+                # Send the modified response data and script block as HTML
+                self.request_handler.wfile.write((json.dumps(response_data) + script_block).encode('utf-8'))
 
         else:
             utils.logger.log_error("Failed to authenticate student with email " + email)
