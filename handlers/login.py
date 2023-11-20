@@ -89,6 +89,7 @@ class LoginHandler:
         auth_result = self.auth.authenticate_student(email, password)
         if auth_result is not None and auth_result[0]:  # Check if authentication succeeded
             _, student_id, department = auth_result
+            # print(f"Debug: Authenticated student_id: {student_id}")
 
             # Check if the student has voted
             vote_handler = VoteHandler()
@@ -103,8 +104,10 @@ class LoginHandler:
                 # Create a Cookie object and set the token as a cookie
                 cookies = http.cookies.SimpleCookie()
                 cookies["token"] = str(token)
+                cookies["student_id"] = str(student_id)
 
-                print(f"[+] Validated")
+                # print(f"Debug: Redirecting to /vote with student_id: {student_id}")
+
                 # Get the cookie header as a string
                 cookie_header = cookies.output(header="", sep="; ")
 
@@ -113,7 +116,6 @@ class LoginHandler:
                     "message": "Authentication successful",
                     "student_id": student_id,
                 }
-
                 # Include a script block to store student_id in session storage
                 script_block = f"""
                         <script>
