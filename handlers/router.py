@@ -216,7 +216,7 @@ class Router(SimpleHTTPRequestHandler):
 
         # Clear the token from the user's browser
         self.send_response(302)  # 302 Found (redirect)
-        self.send_header("Location", "/")  # Redirect to the login page
+        self.send_header("Location", "/login")  # Redirect to the login page
         self.send_header("Set-Cookie", "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT")  # Clear the token cookie
         self.end_headers()
 
@@ -225,6 +225,7 @@ class Router(SimpleHTTPRequestHandler):
         # @TODO IMPLEMENT LOGIC FOR CHECKING IF VOTED OR IF TIME TO VOTE BLAH BLAH
         # get token from request and print it out.
         token = self.get_token_from_request()
+        print("I have token.")
         if token is None:
             # Token is missing, redirect to the login page
             self.send_response(303)
@@ -275,4 +276,5 @@ class Router(SimpleHTTPRequestHandler):
         Main acts as the entry point for the whole project
         It only calls the router and serves the as per the port
     """
+
 
