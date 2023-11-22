@@ -20,6 +20,20 @@ from utils.utils import Helpers as hps
 
 path = os.path.abspath("../")
 sys.path.append(path)
+BLACKLISTED_TOKENS = set()
+
+
+def get_main_token(student_id, department):
+    # Generate the main token for the student
+    token = hps.CreateStudentJWTToken(student_id, department)
+    # Create a Cookie object and set the token as a cookie
+    cookies = http.cookies.SimpleCookie()
+    cookies["token"] = str(token)
+    cookies["student_id"] = str(student_id)
+    # Get the cookie header as a string
+    cookie_header = cookies.output(header="", sep="; ")
+    print(f' get main token: {token}')
+    return token, cookie_header
 
 
 class LoginHandler:
@@ -38,6 +52,7 @@ class LoginHandler:
         self.request_handler.end_headers()
         with open("templates/register_student.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
+
 
     def handle_student_registration(self):
         # initiate a new DB connection and and call Student class
@@ -71,12 +86,25 @@ class LoginHandler:
         with open("templates/student_login.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
 
+    def get_short_lived_token(self, student_id):
+        # Generate the short-lived token for the student
+        short_lived_token = hps.create_short_lived_token(student_id, expiration=3600)  # Set expiration time in seconds
+        cookies = http.cookies.SimpleCookie()
+        cookies["short_lived_token"] = str(short_lived_token)
+        print(f'short_lived2{short_lived_token}')
+        cookies["student_id"] = str(student_id)
+        # Get the cookie header as a string
+        cookie_header = cookies.output(header="", sep="; ")
+        return short_lived_token, cookie_header
+
     def handle_get_user(self):
         self.request_handler.send_response(200)
         self.request_handler.send_header("Content-type", "text/html")
         self.request_handler.end_headers()
         with open("templates/user_login.html", "rb") as file:
             self.request_handler.wfile.write(file.read())
+
+
 
     def handle_authenticate_student(self):
         # Handle the authentication logic for student login
@@ -85,7 +113,6 @@ class LoginHandler:
         post_params = {param.split("=")[0]: unquote(param.split("=")[1]) for param in post_data.split("&")}
         email = post_params.get("email")
         password = post_params.get("password")
-
         auth_result = self.auth.authenticate_student(email, password)
         if auth_result is not None and auth_result[0]:  # Check if authentication succeeded
             _, student_id, department = auth_result
@@ -95,6 +122,12 @@ class LoginHandler:
             vote_handler = VoteHandler()
             if vote_handler.has_user_voted(student_id):
                 # User has voted, redirect to the dashboard
+                short_lived_token = hps.create_short_lived_token(student_id, expiration=3600)
+                cookies = http.cookies.SimpleCookie()
+                cookies["short_lived_token"] = str(short_lived_token)
+                cookies["student_id"] = str(student_id)
+                print(f"short_lived_token: {short_lived_token}")
+
                 self.request_handler.send_response(303)
                 self.request_handler.send_header("Location", "/dashboard")
                 self.request_handler.end_headers()
@@ -105,12 +138,12 @@ class LoginHandler:
                 cookies = http.cookies.SimpleCookie()
                 cookies["token"] = str(token)
                 cookies["student_id"] = str(student_id)
+                print(f"Token after creating: {token}")
 
                 # print(f"Debug: Redirecting to /vote with student_id: {student_id}")
 
                 # Get the cookie header as a string
                 cookie_header = cookies.output(header="", sep="; ")
-
                 # Include student_id in the response data
                 response_data = {
                     "message": "Authentication successful",

@@ -1,234 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Online Voting System</title>
-        <style>
-            /* Add your CSS styles here */
-            body {
-                margin: 0;
-                padding: 0;
-            }
+<head>
+    <title>Online Voting System</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            margin: 0;
+            padding: 0;
+        }
 
-            .candidate-container {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin: 10px;
-                width: 200px; /* Reduce container size */
-            }
+        .candidate-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 200px; /* Reduce container size */
+        }
 
-            .candidate-container h3 {
-                font-size: 18px;
-            }
+        .candidate-container h3 {
+            font-size: 18px;
+        }
 
-            .button-green {
-                background-color: #4CAF50;
-                border: none;
-                color: white;
-                padding: 10px 15px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                cursor: pointer;
-                border-radius: 4px;
-            }
+        .button-green {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
 
-            .confirm-popup {
-                background-color: rgba(0, 0, 0, 0.7);
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                display: none;
-                justify-content: center;
-                align-items: center;
-            }
+        .confirm-popup {
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
 
-            .button-red {
-                background-color: #f44336; /* Red color */
-                border: none;
-                color: white;
-                padding: 10px 15px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                cursor: pointer;
-                border-radius: 4px;
-            }
+        .button-red {
+            background-color: #f44336; /* Red color */
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
 
-            .popup-content {
-                background: white;
-                padding: 20px;
-                border-radius: 5px;
-                text-align: center;
-            }
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
 
-            /* Define a grid container */
-            .candidate-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
-                gap: 20px; /* Spacing between columns and rows */
-            }
+        /* Define a grid container */
+        .candidate-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
+            gap: 20px; /* Spacing between columns and rows */
+        }
 
-            /* Define a candidate container */
-            .candidate-container {
-                background-color: #f0f0f0;
-                padding: 20px;
-                border: 1px solid #ccc;
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-    <!--    <div id="main">-->
-            <h1>Vote for Candidates</h1>
-            <div class="candidate-grid" id="candidateContainer"></div>
+        /* Define a candidate container */
+        .candidate-container {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!--    <div id="main">-->
+<h1>Vote for Candidates</h1>
+<div class="candidate-grid" id="candidateContainer"></div>
 
-            <!-- Confirm Popup -->
-            <div class="confirm-popup" id="confirmPopup">
-                <div class="popup-content">
-                    <p>Confirm your vote?</p>
-                    <button class="button-green" onclick="confirmAndRedirect()">Yes</button>
-                    <button class="button-red" onclick="cancelVote()">No</button>
-                </div>
-            </div>
-        <div id="messageContainer"></div>
-        <script>
-            function confirmAndRedirect() {
-                // Get the selected candidate ID from storage
-                const candidate_id = sessionStorage.getItem("selectedCandidate");
+<!-- Confirm Popup -->
+<div class="confirm-popup" id="confirmPopup">
+    <div class="popup-content">
+        <p>Confirm your vote?</p>
+        <button class="button-green" onclick="confirmAndRedirect()">Yes</button>
+        <button class="button-red" onclick="cancelVote()">No</button>
+    </div>
+</div>
+<div id="messageContainer"></div>
+<script>
+    function confirmAndRedirect() {
+        // Get the selected candidate ID from storage
+        const candidate_id = sessionStorage.getItem("selectedCandidate");
 
-                // Check if the candidate ID is available
-                if (!candidate_id) {
-                    console.error("No selected candidate ID.");
-                    showMessage("No Selected Candidate", 'error');
-                    return;
+        // Check if the candidate ID is available
+        if (!candidate_id) {
+            console.error("No selected candidate ID.");
+            showMessage("No Selected Candidate", 'error');
+            return;
+        }
+
+        // Get the student ID from storage or wherever you have it stored
+        const student_id = sessionStorage.getItem("student_id");
+        console.log("Student ID:", student_id);
+
+        // AJAX request to update the candidate vote count and the vote table
+        fetch(`/vote/${candidate_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                candidate_id: candidate_id,
+                student_id: student_id,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
-                // Get the student ID from storage or wherever you have it stored
-                const student_id = sessionStorage.getItem("student_id");
+                return response.json();
+            })
+            .then(data => {
                 console.log("Student ID:", student_id);
+                console.log("vote success:", data);
 
-
-                // AJAX request to update the candidate vote count and the vote table
-                 fetch(`/vote/${candidate_id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        candidate_id: candidate_id,
-                        student_id: student_id,
-                    }),
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Student ID:", student_id);
-                    console.log("vote success:", data);
-
-                    // Show a pop-up message for success
-                    showMessage(data.message, data.status);
-                    // Additional logic if needed after updating candidate vote count
+                // Show a pop-up message for success
+                showMessage(data.message, data.status);
+                // Additional logic if needed after updating candidate vote count
                 window.location.href = "/dashboard";
-                })
-                .catch(error => {
-                    console.error('Error updating candidate vote count:', error);
-                })
-                .finally(() => {
-                    // Hide the confirmation popup
-                    const confirmPopup = document.getElementById("confirmPopup");
-                    confirmPopup.style.display = "none";
-
-                    // Remove the stored candidate ID
-                    sessionStorage.removeItem("selectedCandidate");
-                });
-            }
-
-            function showMessage(message, type) {
-                // You can customize this part based on your styling or use a library for modals
-                alert(`${type.toUpperCase()}: ${message}`);
-                const messageContainer = document.getElementById("messageContainer");
-                messageContainer.innerText = message;
-            }
-
-
-
-            function cancelVote() {
+            })
+            .catch(error => {
+                console.error('Error updating candidate vote count:', error);
+            })
+            .finally(() => {
                 // Hide the confirmation popup
                 const confirmPopup = document.getElementById("confirmPopup");
-                confirmPopup.style.display = "none"; // Fixed the typo here
+                confirmPopup.style.display = "none";
+
                 // Remove the stored candidate ID
                 sessionStorage.removeItem("selectedCandidate");
-            }
+            });
+    }
 
-            // Update your confirmVote function to include the candidate data fetching logic
-            function confirmVote(candidateId) {
-                const confirmPopup = document.getElementById("confirmPopup");
-                confirmPopup.style.display = "flex";
+    function showMessage(message, type) {
+        // You can customize this part based on your styling or use a library for modals
+        alert(`${type.toUpperCase()}: ${message}`);
+        const messageContainer = document.getElementById("messageContainer");
+        messageContainer.innerText = message;
+    }
 
-                // Store the selected candidate ID for later use
-                sessionStorage.setItem("selectedCandidate", candidateId);
+    function cancelVote() {
+        // Hide the confirmation popup
+        const confirmPopup = document.getElementById("confirmPopup");
+        confirmPopup.style.display = "none"; // Fixed the typo here
+        // Remove the stored candidate ID
+        sessionStorage.removeItem("selectedCandidate");
+    }
 
-                // Fetch candidate data
-                fetchCandidatesData();
-            }
-            // Function to fetch candidate data from the server
-            function fetchCandidatesData() {
-                console.log("Fetching candidates data...");
-                fetch('/get-candidates')
-                    .then(response => response.json())
-                    .then(data => {
-                        // Populate the candidates container with the fetched data
-                        populateCandidates(data);
-                        console.log(data);
+    // Update your confirmVote function to include the candidate data fetching logic
+    function confirmVote(candidateId) {
+        const confirmPopup = document.getElementById("confirmPopup");
+        confirmPopup.style.display = "flex";
 
-                    })
-                    .catch(error => console.error('Error fetching candidates:', error));
+        // Store the selected candidate ID for later use
+        sessionStorage.setItem("selectedCandidate", candidateId);
 
-            }
-            // Function to populate the candidates container with data
-            function populateCandidates(data) {
-                const candidatesContainer = document.getElementById("candidateContainer");
+        // Fetch candidate data
+        fetchCandidatesData();
+    }
 
-                // Clear existing content
-                candidatesContainer.innerHTML = "";
+    // Function to fetch candidate data from the server
+    function fetchCandidatesData() {
+        console.log("Fetching candidates data...");
+        fetch('/get-candidates')
+            .then(response => response.json())
+            .then(data => {
+                // Populate the candidates container with the fetched data
+                populateCandidates(data);
+                console.log(data);
 
-                // Iterate through the candidate data and create HTML elements
-                data.forEach(candidate => {
-                    const candidateDiv = document.createElement("div");
-                    candidateDiv.classList.add("candidate-container");
+            })
+            .catch(error => console.error('Error fetching candidates:', error));
+    }
 
-                    const heading = document.createElement("h3");
-                    heading.innerText = `Candidate ${candidate.candidate_id} - ${candidate.candidate_name}`;
+    // Function to populate the candidates container with data
+    function populateCandidates(data) {
+        const candidatesContainer = document.getElementById("candidateContainer");
 
-                    const position = document.createElement("p");
-                    position.innerText = `Position: ${candidate.position_id}`;
+        // Clear existing content
+        candidatesContainer.innerHTML = "";
 
-                    const voteButton = document.createElement("button");
-                    voteButton.classList.add("button-green");
-                    voteButton.innerText = "Vote";
-                    voteButton.addEventListener("click", () => confirmVote(candidate.candidate_id));
+        // Iterate through the candidate data and create HTML elements
+        data.forEach(candidate => {
+            const candidateDiv = document.createElement("div");
+            candidateDiv.classList.add("candidate-container");
 
-                    candidateDiv.appendChild(heading);
-                    candidateDiv.appendChild(position);
-                    candidateDiv.appendChild(voteButton);
+            const heading = document.createElement("h3");
+            heading.innerText = `Candidate ${candidate.candidate_id} - ${candidate.candidate_name}`;
 
-                    candidatesContainer.appendChild(candidateDiv);
-                });
-            }
-            // Fetch candidate data when the DOM content is loaded
-            document.addEventListener("DOMContentLoaded", fetchCandidatesData);
+            const position = document.createElement("p");
+            position.innerText = `Position: ${candidate.position_name}`;
 
+            const voteButton = document.createElement("button");
+            voteButton.classList.add("button-green");
+            voteButton.innerText = "Vote";
+            voteButton.addEventListener("click", () => confirmVote(candidate.candidate_id));
 
-        </script>
-    </body>
+            candidateDiv.appendChild(heading);
+            candidateDiv.appendChild(position);
+            candidateDiv.appendChild(voteButton);
+
+            candidatesContainer.appendChild(candidateDiv);
+        });
+    }
+
+    // Fetch candidate data when the DOM content is loaded
+    document.addEventListener("DOMContentLoaded", fetchCandidatesData);
+
+</script>
+</body>
 </html>

@@ -1,4 +1,4 @@
-#utils.py
+# utils.py
 
 """
     This package explores utility functions to be used throught the project
@@ -41,21 +41,27 @@ class Helpers:
         return html.escape(user_input)
 
     # JWT token creation and validation
-    def CreateUserJWTToken(user_id, user_type,email):
+    def CreateUserJWTToken(user_id, user_type, email):
         payload = {
             'email': email,
             'user_id': user_id,
             'user_type': user_type,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
         }
         return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-    def CreateStudentJWTToken(student_id, department):
+    def create_short_lived_token(student_id, expiration):
+        payload = {
+            'student_id': student_id,
+        }
+        return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+    def CreateStudentJWTToken(student_id, department, ):
         payload = {
             'student_id': student_id,
             'department': department,
             'user_type': 'student',
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
         }
         return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
